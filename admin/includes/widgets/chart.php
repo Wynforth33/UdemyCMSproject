@@ -17,12 +17,11 @@
     var data = google.visualization.arrayToDataTable([
       ['Data', 'Count'],
 
-  <?php
-      for ($i=0; $i<count($element_text); $i++) {
-        echo "['{$element_text[$i]}', {$element_count[$i]}],";
-      }
-  ?>
-
+      <?php
+          for ($i = 0; $i < count($column_text); $i++) {
+            echo "['{$column_text[$i]}', {$column_count[$i]}],";
+          }
+      ?>
     ]);
 
     var options = {
@@ -39,5 +38,5 @@
 </script>
 
 <div class="row">
-    <div class="col-lg-12 col-offset-" id="columnchart_material" style="width:'auto'; height: 500px;" ></div>
+    <div id="columnchart_material" style="width:'auto'; height: 500px;"></div>
 </div>

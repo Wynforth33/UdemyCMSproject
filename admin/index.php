@@ -27,11 +27,15 @@
                             <?php include "includes/widgets/users.php"; ?>
 
                             <?php include "includes/widgets/categories.php"; ?>
+
+
                             
                         </div><!-- .row -->
 
                         <!-- GOOGLE CHARTS -->
                         <?php include "includes/widgets/chart.php"; ?>
+
+                        
                         
                     </div><!-- .col-lg-12 -->
                 </div><!-- .row -->
