@@ -1,25 +1,13 @@
 <?php 
   
+  $draft_post_count          = getDraftPostCount();
+  $unapproved_comments_count = getUnapprovedCommentCount();
+  $subscribers_count         = getSubscribersCount();
 
-  $post_query = "SELECT * FROM posts WHERE post_status = 'draft'";
-  $draft_posts = mysqli_query($connection, $post_query); 
-  $draft_post_count = mysqli_num_rows($draft_posts);
-
-  $comment_query = "SELECT * FROM comments WHERE comment_status = 'Awaiting Approval'";
-  $unapproved_comments = mysqli_query($connection, $comment_query); 
-  $unapproved_comments_count = mysqli_num_rows($unapproved_comments);
-
-  $user_query = "SELECT * FROM users WHERE user_role = 'subscriber'";
-  $subscribers = mysqli_query($connection, $user_query); 
-  $subscribers_count = mysqli_num_rows($subscribers);
-
-
-  $element_text = ['Active Posts', 'Draft Posts', 'Comments', 'Unapproved Comments', 'Users', 'Subscribers', 'Categories']; 
-  $element_count = [$post_count, $draft_post_count, $comment_count, $unapproved_comments_count, $user_count, $subscribers_count, $category_count];
-
+  $column_text = ['Active Posts', 'Draft Posts', 'Comments', 'Unapproved Comments', 'Users', 'Subscribers', 'Categories']; 
+  $column_count = [$post_count, $draft_post_count, $comment_count, $unapproved_comments_count, $user_count, $subscribers_count, $category_count];
 
 ?>
-
 
 <script type="text/javascript">
   google.charts.load('current', {'packages':['bar']});
@@ -29,11 +17,11 @@
     var data = google.visualization.arrayToDataTable([
       ['Data', 'Count'],
 
-    <?php
-        for ($i = 0; $i < count($element_text); $i++) {
-            echo "['{$element_text[$i]}', {$element_count[$i]}],";
-        }
-    ?>
+  <?php
+      for ($i=0; $i<count($element_text); $i++) {
+        echo "['{$element_text[$i]}', {$element_count[$i]}],";
+      }
+  ?>
 
     ]);
 

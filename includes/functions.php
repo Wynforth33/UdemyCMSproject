@@ -8,21 +8,24 @@
 // I.   UTILITY FUNCTIONS:
 //   I.A   - CONFIRM QUERY
 //
-// II.  POST FUNCTIONS:
+// II.   POST FUNCTIONS:
 //   II.A  - CREATE POST
 //   II.B  - GET POST
 //   II.C  - GET POSTS  
 //   II.D  - GET POSTS BY CATEGORY
 //   II.E  - GET POSTS BY AUTHOR
-//   II.E  - GET POST COUNT
-//   II.F  - SEARCH POSTS
-//   II.G  - (READ) DISPLAY POSTS (GENERAL)
-//   II.H  - (READ) DISPLAY POST (GENERAL)
-//   II.I  - (READ) DISPLAY POSTS TABLE DATA (ADMIN)
-//   II.J  - UPDATE POST
-//   II.K  - DELETE POST 
+//   II.F  - GET POST COUNT
+//   II.G  - GET DRAFT POST COUNT    
+//   II.H  - SEARCH POSTS
+//   II.I  - (READ) DISPLAY POSTS (GENERAL)
+//   II.J  - (READ) DISPLAY POST (GENERAL)
+//   II.K  - (READ) DISPLAY POSTS TABLE DATA (ADMIN)
+//   II.L  - UPDATE POST
+//   II.M  - (UPDATE) INCREMENT POST'S COMMENT COUNTER
+//   II.N  - (UPDATE) DECREMENT POST'S COMMENT COUNTER    
+//   II.O  - DELETE POST 
 //
-// III. CATEGORY FUNCTIONS:
+// III.  CATEGORY FUNCTIONS:
 //   III.A - CREATE CATEGORY
 //   III.B - GET CATEGORY
 //   III.C - GET CATEGORIES
@@ -33,39 +36,43 @@
 //   III.G - UPDATE CATEGORY
 //   III.H - DELETE CATEGORY
 //
-// IV.  COMMENT FUNCTIONS:
+// IV.   COMMENT FUNCTIONS:
 //   IV.A  - CREATE COMMENT
 //   IV.B  - GET COMMENT
 //   IV.C  - GET COMMENTS
 //   IV.D  - GET COMMENTS BY POST
-//   IV.E  - GET COMMENTS BY AUTHOR
-//   IV.E  - GET COMMENT COUNT
-//   IV.F  - (READ) DISPLAY COMMENTS (GENERAL)
-//   IV.G  - (READ) DISPLAY COMMENTS TABLE DATA (ADMIN)
-//   IV.H  - (UPDATE) APPROVE COMMENT (ADMIN)
-//   IV.I  - (UPDATE) DENY COMMENT (ADMIN)
-//   IV.J  - DELETE COMMENT (ADMIN)
+//   IV.E  - GET APPROVED COMMENTS BY POST (GENERAL)
+//   IV.F  - GET COMMENTS BY AUTHOR
+//   IV.G  - GET COMMENT COUNT
+//   IV.H  - GET UNAPPROVED COMMENT COUNT   
+//   IV.I  - (READ) DISPLAY COMMENTS (GENERAL)
+//   IV.J  - (READ) DISPLAY COMMENTS TABLE DATA (ADMIN)
+//   IV.K  - (UPDATE) APPROVE COMMENT (ADMIN)
+//   IV.L  - (UPDATE) DENY COMMENT (ADMIN)
+//   IV.M  - DELETE COMMENT (ADMIN)
 //
-//  V.  USER FUNCTIONS:
+//  V.   USER FUNCTIONS:
 //   V.A  - CREATE USER
 //   V.B  - GET USER
 //   V.C  - GET USERS
-//   V.D  - GET USER BY USERNAME 
-//   V.D  - GET USER COUNT
-//   V.E  - SEARCH USER BY USERNAME
-//   V.F  - (READ) DISPLAY USERS TABLE DATA ( ADMIN )
-//   V.G  - UPDATE USER
-//   V.H  - DELETE USER 
+//   V.D  - GET USER ID BY USERNAME:
+//   V.E  - GET USER BY USERNAME 
+//   V.F  - GET USER COUNT
+//   V.G  - GET SUBSCRIBERS COUNT
+//   V.H  - SEARCH USER BY USERNAME
+//   V.I  - (READ) DISPLAY USERS TABLE DATA ( ADMIN )
+//   V.J  - UPDATE USER
+//   V.K  - DELETE USER 
 //
-//   VI.  LOGIN FUNCTIONS:
+//  VI.  LOGIN FUNCTIONS:
 //   VI.A  - CLEAN LOGIN VALUES
 //   VI.B  - GET USER_DATA ARRAY
 //   VI.C  - SESSIONIZE USER DATA   
 //
-//   VI.  PROFILE FUNCTIONS:
-//   VI.A  - CREATE PROFILE
-//   VI.B  - GET PROFILE
-//   VI.C  - UPDATE PROFILE 
+//  VII. PROFILE FUNCTIONS:
+//   VII.A  - CREATE PROFILE
+//   VII.B  - GET PROFILE
+//   VII.C  - UPDATE PROFILE 
 //
 ///////////////////////////////////////////////////////////////////////
 
@@ -202,7 +209,7 @@
         return $result;
     }
 
-  // II.C - GET POST COUNT:
+  // II.F - GET POST COUNT:
   // ( $limit is Defined in includes/constants )
     function getPostCount() {
         global $connection;
@@ -218,13 +225,13 @@
         return $count;
     }    
 
-  // II.C - GET UNAPPROVED POST COUNT:
+  // II.G - GET UNAPPROVED POST COUNT:
   // ( $limit is Defined in includes/constants )
     function getDraftPostCount() {
         global $connection;
         
         $query  = "SELECT * FROM posts WHERE post_status = 'draft'";
-        
+
         $result = mysqli_query( $connection, $query );
         
         confirmQuery( $result );
@@ -234,7 +241,7 @@
         return $count;
     }        
 
-  // II.F - SEARCH POSTS:
+  // II.H - SEARCH POSTS:
   // ( $limit is Defined in includes/constants )
     function searchPosts( $search, $orderBy, $order, $limit ) {
         global $connection;
@@ -275,7 +282,7 @@
         }   
     }
 
-  // II.G - (READ) DISPLAY POSTS ( GENERAL ):
+  // II.I - (READ) DISPLAY POSTS ( GENERAL ):
     function displayPosts( $posts ) {  
         global $logged_in;
         $counter = 0;
@@ -327,7 +334,7 @@
         }
     }
 
-  // II.H - (READ) DISPLAY POST ( GENERAL ):
+  // II.J - (READ) DISPLAY POST ( GENERAL ):
     function displayPost( $post ) { 
                 global $logged_in;        
                  $post_id            = $post['post_id'];
@@ -365,7 +372,7 @@
                     <hr> <?php         
     }     
 
-  // II.I - (READ) DISPLAY POSTS TABLE DATA ( ADMIN ):
+  // II.K - (READ) DISPLAY POSTS TABLE DATA ( ADMIN ):
     function displayPostsTable( $posts ) {  
         global $logged_in;
         $logged_in_post = null;
@@ -407,7 +414,7 @@
         }
     }
 
-  // II.J - UPDATE POST: ( May need to relook at $status/$count later - 
+  // II.L - UPDATE POST: ( May need to relook at $status/$count later - 
   //                      though should be separate and dynamic );
     function updatePost( $cat_id, $title, $status, $author, $image, $image_desc, $tags, $content, $post_id ) {
         global $connection;
@@ -447,7 +454,7 @@
         header("location: admin_posts.php?{$logged_in}");
     }
   
-  // II.K - (UPDATE) INCREMENT POST'S COMMENT COUNTER:
+  // II.M - (UPDATE) INCREMENT POST'S COMMENT COUNTER:
     function incrementCommentCount( $post_id ) {
         global $connection;
         
@@ -464,7 +471,7 @@
         confirmQuery( $result );
     }
 
-  // II.K - (UPDATE) DECREMENT POST'S COMMENT COUNTER:
+  // II.N - (UPDATE) DECREMENT POST'S COMMENT COUNTER:
     function decrementCommentCount( $post_id ) {
         global $connection;
         
@@ -481,7 +488,7 @@
         confirmQuery( $result );
     }
 
-  // II.L - DELETE POST:
+  // II.O - DELETE POST:
     function deletePost( $id ) {
         global $logged_in;
         global $connection;
@@ -570,7 +577,6 @@
     }
 
   // II.C - GET CATEGORY COUNT:
-  // ( $limit is Defined in includes/constants )
     function getCategoryCount() {
         global $connection;
         
@@ -584,7 +590,7 @@
 
         return $count;
     } 
-  
+
   // III.D - (READ) DISPLAY CATEGORY TABLE DATA:
     function displayCategoryTable( $categories ) {
         global $logged_in;
@@ -824,12 +830,11 @@
         return $result;
     }
 
-  // II.C - GET COMMENT COUNT:
-  // ( $limit is Defined in includes/constants )
+  // IV.G - GET COMMENT COUNT:
     function getCommentCount() {
         global $connection;
         
-        $query   = "SELECT * FROM comments ";
+        $query  = "SELECT * FROM comments ";
 
         $result = mysqli_query( $connection, $query );
         
@@ -838,9 +843,24 @@
         $count = mysqli_num_rows($result);
 
         return $count;
-    }    
+    }  
 
-  // IV.G - (READ) DISPLAY COMMENTS (GENERAL):
+  // IV.H - GET UNAPPROVED COMMENT COUNT:
+    function getUnapprovedCommentCount() {
+        global $connection;
+        
+        $query   = "SELECT * FROM comments WHERE comment_status = 'Awaiting Approval'";
+
+        $result = mysqli_query( $connection, $query );
+        
+        confirmQuery( $result );
+        
+        $count = mysqli_num_rows($result);
+
+        return $count;
+    }   
+
+  // IV.I - (READ) DISPLAY COMMENTS (GENERAL):
     function displayComments( $comments ) {    
         while ( $row = mysqli_fetch_assoc( $comments ) ) {
                  $comment_id      = $row['comment_id'];
@@ -870,7 +890,7 @@
       <?php }   
     }
 
-  // IV.H - (READ) DISPLAY COMMENTS TABLE DATA ( ADMIN ):
+  // IV.J - (READ) DISPLAY COMMENTS TABLE DATA ( ADMIN ):
     function displayCommentsTable( $comments ) {
         global $logged_in; 
         $logged_in_com = null;
@@ -910,7 +930,7 @@
         }
     }
 
-  // IV.I - (UPDATE) APPROVE COMMENT:
+  // IV.K - (UPDATE) APPROVE COMMENT:
     function approveComment( $id ) {
         global $logged_in;
         global $connection;
@@ -927,7 +947,7 @@
         header("location: admin_comments.php?{$logged_in}");
     }
 
-  // IV.J - (UPDATE) DENY COMMENT:
+  // IV.L - (UPDATE) DENY COMMENT:
     function denyComment( $id ) {
         global $logged_in;
         global $connection;
@@ -944,7 +964,7 @@
         header("location: admin_comments.php{?$logged_in}");
     }
 
-  // IV.K - DELETE COMMENT:
+  // IV.M - DELETE COMMENT:
     function deleteComment( $post_id, $id ) {
         global $logged_in;
         global $connection;
@@ -1002,7 +1022,6 @@
     }
 
   // V.C - GET USERS:
-  // ( $limit is Defined in includes/constants )
     function getUsers() {
         global $connection;
 
@@ -1033,7 +1052,7 @@
         return $user_id;
     }
 
-  // V.D - GET USER BY USERNAME:
+  // V.E - GET USER BY USERNAME:
     function getUserByUsername( $username ) {
         global $connection;
 
@@ -1053,8 +1072,7 @@
         return $result; 
     }
 
-  // II.C - GET USER COUNT:
-  // ( $limit is Defined in includes/constants )
+  // V.F - GET USER COUNT:
     function getUserCount() {
         global $connection;
         
@@ -1067,9 +1085,24 @@
         $count = mysqli_num_rows($result);
 
         return $count;
+    }
+
+  // V.G - GET SUBSCRIBERS COUNT:
+    function getSubscribersCount() {
+        global $connection;
+        
+        $query  = "SELECT * FROM users WHERE user_role = 'subscriber'";
+
+        $result = mysqli_query( $connection, $query );
+        
+        confirmQuery( $result );
+        
+        $count = mysqli_num_rows($result);
+
+        return $count;
     }      
 
-  // V.E - SEARCH USER BY USERNAME: (Returns 0 if user does not exist and 1 if user does exist);
+  // V.H - SEARCH USER BY USERNAME: (Returns 0 if user does not exist and 1 if user does exist);
     function searchForUserByUsername( $username ) {
         global $connection;
 
@@ -1087,7 +1120,7 @@
         }
     }
 
-  // V.F - (READ) DISPLAY USERS TABLE DATA ( ADMIN ):
+  // V.I - (READ) DISPLAY USERS TABLE DATA ( ADMIN ):
     function displayUsersTable( $users ) { 
         global $logged_in; 
         $logged_in_user = null;
@@ -1118,7 +1151,7 @@
         }
     }
 
-  // V.G - UPDATE USER: ( May need to relook at $status/$count later - 
+  // V.J - UPDATE USER: ( May need to relook at $status/$count later - 
   //                      though should be separate and dynamic );
     function updateUser( $id, $username, $password, $fname, $lname, $email, $image, $role ) {
         global $logged_in;
@@ -1156,7 +1189,7 @@
         header("location: admin_users.php?{$logged_in}");
     }  
 
-  // II.H - DELETE USER:
+  // V.K - DELETE USER:
     function deleteUser( $id ) {
         global $logged_in;
         global $connection;
@@ -1183,7 +1216,7 @@
 // VI.  LOGIN FUNCTIONS
 // ====================================================================
 
-  // VI.H - CLEAN LOGIN VALUES:
+  // VI.A - CLEAN LOGIN VALUES:
     function cleanLoginValues($username, $password) {
         global $connection;
 
@@ -1196,7 +1229,7 @@
         return $safe_user; 
     }
 
-  // V.D - GET USER_DATA ARRAY:
+  // VI.B - GET USER_DATA ARRAY:
     function getUserDataArray( $username ) {
 
         $result = getUserByUsername( $username );
@@ -1223,7 +1256,7 @@
 // VII.  PROFILE FUNCTIONS
 // ====================================================================
 
-  // VII. - CREATE PROFILE:
+  // VII.A - CREATE PROFILE:
     function createProfile( $id, $about='', $education='', $work='') {
         global $connection; 
         
@@ -1235,7 +1268,7 @@
         confirmQuery( $result );
     }
 
-  // VII. - GET PROFILE:
+  // VII.B - GET PROFILE:
     function getProfile($id){
         global $connection;
 
@@ -1251,7 +1284,7 @@
         return $user_profile;
     }  
 
-  // VI.H - UPDATE PROFILE
+  // VII.C - UPDATE PROFILE
     function updateProfile( $id, $username, $password, $fname, $lname, $email, $image, $role, $about='', $education='', $work='' ) {
         global $logged_in;
         global $connection;
