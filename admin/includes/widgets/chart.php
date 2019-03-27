@@ -1,11 +1,12 @@
 <?php 
   
   $draft_post_count          = getDraftPostCount();
+  $published_post_count      = getPublishedPostCount();
   $unapproved_comments_count = getUnapprovedCommentCount();
   $subscribers_count         = getSubscribersCount();
 
-  $column_text = ['Active Posts', 'Draft Posts', 'Comments', 'Unapproved Comments', 'Users', 'Subscribers', 'Categories']; 
-  $column_count = [$post_count, $draft_post_count, $comment_count, $unapproved_comments_count, $user_count, $subscribers_count, $category_count];
+  $column_text = ['All Posts', 'Published Posts', 'Draft Posts', 'Comments', 'Unapproved Comments', 'Users', 'Subscribers', 'Categories']; 
+  $column_count = [$post_count, $published_post_count, $draft_post_count, $comment_count, $unapproved_comments_count, $user_count, $subscribers_count, $category_count];
 
 ?>
 

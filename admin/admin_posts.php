@@ -25,7 +25,7 @@
 
                     <h1 class="page-header">
                         Welcome to Administration
-                        <small><?php echo $_SESSION['username']; ?></small>
+                        <small><?php echo $_SESSION['username'] ?></small>
                     </h1>
 
                     <?php

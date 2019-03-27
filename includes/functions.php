@@ -225,7 +225,7 @@
         return $count;
     }    
 
-  // II.G - GET UNAPPROVED POST COUNT:
+  // II.G - GET DRAFT POST COUNT:
   // ( $limit is Defined in includes/constants )
     function getDraftPostCount() {
         global $connection;
@@ -239,7 +239,23 @@
         $count = mysqli_num_rows($result);
 
         return $count;
-    }        
+    }    
+
+  // II.G - GET PUBLISHED POST COUNT:
+  // ( $limit is Defined in includes/constants )
+    function getPublishedPostCount() {
+        global $connection;
+        
+        $query  = "SELECT * FROM posts WHERE post_status = 'published'";
+
+        $result = mysqli_query( $connection, $query );
+        
+        confirmQuery( $result );
+        
+        $count = mysqli_num_rows($result);
+
+        return $count;
+    }         
 
   // II.H - SEARCH POSTS:
   // ( $limit is Defined in includes/constants )
@@ -1194,8 +1210,8 @@
         global $logged_in;
         global $connection;
 
-        $query_users  = "DELETE FROM users ";
-        $query_users .= "WHERE user_id = {$id} ";
+        $query  = "DELETE FROM users ";
+        $query .= "WHERE user_id = {$id} ";
 
         $result = mysqli_query($connection, $query);
 

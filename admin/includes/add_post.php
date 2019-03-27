@@ -48,7 +48,7 @@
     </div><!-- .form-group -->
     
     <div class="form-group">
-        <input type="submit" class="btn btn-primary" name="create_post" value="Publish Post">
+        <input type="submit" class="btn btn-primary" name="create_post" value="Create Post">
     </div><!-- .form-group -->
      
 </form>

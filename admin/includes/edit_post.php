@@ -25,13 +25,24 @@
     </div><!-- .form-group -->
 
     <div class="form-group">
-        <label for="post_author">Status</label>
-        <input type="text" class="form-control" name="post_status" value="<?php echo $post[ 'post_status' ]; ?>">
-    </div><!-- .form-group -->
-    
-    <div class="form-group">
         <label for="post_author">Author</label>
         <input type="text" class="form-control" name="post_author" value="<?php echo $post[ 'post_author' ]; ?>">
+    </div><!-- .form-group -->
+
+    <div class="form-group">
+        <label for="post_status">Status</label>
+        <select name="post_status">
+            <option value=""><?php echo $post[ 'post_status' ]; ?></option>
+            <?php if ($post[ 'post_status' ] === 'draft' ) : ?>
+              
+              <option value="published">Publish</option>
+            
+            <?php else : ?>
+
+              <option value="draft">Draft</option>  
+
+            <?php endif; ?>
+        </select>
     </div><!-- .form-group -->
     
     <div class="form-group">

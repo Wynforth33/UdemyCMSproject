@@ -14,7 +14,7 @@
     <div id="wrapper">
 
         <!-- Navigation -->
-        <?php include "includes/admin_navbar.php"; ?>
+        <?php include "includes/admin_navbar.php" ?>
 
         <div id="page-wrapper">
             <div class="container-fluid">
@@ -24,7 +24,7 @@
                        
                         <h1 class="page-header">
                             Welcome to Administration
-                            <small><?php echo $_SESSION['username']; ?></small>
+                            <small><?php echo $_SESSION['username'] ?></small>
                         </h1>
                         
                         <?php 

@@ -1,4 +1,4 @@
-<?php define('TITLE', 'Home | PHP CMS Project'); ?>
+<?php define('TITLE', 'Home | PHP CMS Project') ?>
 
 <!-- WEB PAGE -->
 <?php include "includes/header.php" ?>

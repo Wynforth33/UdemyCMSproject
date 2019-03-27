@@ -1,10 +1,10 @@
-<?php define("TITLE", "POST | PHP CMS Project"); ?>
+<?php define("TITLE", "POST | PHP CMS Project") ?>
     
 <!-- WEB PAGE  -->
-<?php include "includes/header.php"; ?>
+<?php include "includes/header.php" ?>
 
     <!-- Navigation -->
-    <?php include "includes/navbar.php"; ?>
+    <?php include "includes/navbar.php" ?>
 
     <!-- Page Content -->
     <div class="container">
@@ -21,18 +21,18 @@
                     }  
                 ?>
                 
-                <?php displayPost( $post ); ?>
+                <?php displayPost( $post ) ?>
                    
                 <!-- Post Comments -->
-                <?php include "includes/comments.php"; ?>   
+                <?php include "includes/comments.php" ?>   
                     
             </div> <!-- .col-md-8 -->
 
             <!-- Blog Sidebar Widgets Column -->
-            <?php include "includes/sidebar.php"; ?>
+            <?php include "includes/sidebar.php" ?>
 
         </div><!-- .row -->
 
         <hr>
 
-<?php include "includes/footer.php"; ?>
+<?php include "includes/footer.php" ?>
