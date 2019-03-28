@@ -1,42 +1,26 @@
 <?php 
   
   $draft_post_count          = getDraftPostCount();
-  $published_post_count      = getPublishedPostCount();
+  $active_post_count         = getPublishedPostCount();
   $unapproved_comments_count = getUnapprovedCommentCount();
   $subscribers_count         = getSubscribersCount();
+  $chart_data = [];
+  $chart_row = [];
 
-  $column_text = ['All Posts', 'Published Posts', 'Draft Posts', 'Comments', 'Unapproved Comments', 'Users', 'Subscribers', 'Categories']; 
-  $column_count = [$post_count, $published_post_count, $draft_post_count, $comment_count, $unapproved_comments_count, $user_count, $subscribers_count, $category_count];
+  $column_text = ['Data', 'All Posts', 'Active Posts', 'Draft Posts', 'Comments', 'Unapproved Comments', 'Users', 'Subscribers', 'Categories']; 
+  $column_count = ['Count', $post_count, $active_post_count, $draft_post_count, $comment_count, $unapproved_comments_count, $user_count, $subscribers_count, $category_count];
+
+  for ($i = 0; $i < count($column_text); $i++) {
+    array_push( $chart_row, $column_text[$i], $column_count[$i] );
+    array_push( $chart_data, $chart_row ); 
+    $chart_row = [];
+  }
+
+  $chart_data_json = json_encode($chart_data);
+
+  echo "<div id='chart_data' data-chart-data='{$chart_data_json}'></div>";
 
 ?>
-
-<script type="text/javascript">
-  google.charts.load('current', {'packages':['bar']});
-  google.charts.setOnLoadCallback(drawChart);
-
-  function drawChart() {
-    var data = google.visualization.arrayToDataTable([
-      ['Data', 'Count'],
-
-      <?php
-          for ($i = 0; $i < count($column_text); $i++) {
-            echo "['{$column_text[$i]}', {$column_count[$i]}],";
-          }
-      ?>
-    ]);
-
-    var options = {
-      chart: {
-        title: '',
-        subtitle: '',
-      }
-    };
-
-    var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
-
-    chart.draw(data, google.charts.Bar.convertOptions(options));
-  }
-</script>
 
 <div class="row">
     <div id="columnchart_material" style="width:'auto'; height: 500px;"></div>

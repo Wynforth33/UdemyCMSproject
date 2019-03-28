@@ -15,26 +15,28 @@
 //   II.D  - GET POSTS BY CATEGORY
 //   II.E  - GET POSTS BY AUTHOR
 //   II.F  - GET POST COUNT
-//   II.G  - GET DRAFT POST COUNT    
-//   II.H  - SEARCH POSTS
-//   II.I  - (READ) DISPLAY POSTS (GENERAL)
-//   II.J  - (READ) DISPLAY POST (GENERAL)
-//   II.K  - (READ) DISPLAY POSTS TABLE DATA (ADMIN)
-//   II.L  - UPDATE POST
-//   II.M  - (UPDATE) INCREMENT POST'S COMMENT COUNTER
-//   II.N  - (UPDATE) DECREMENT POST'S COMMENT COUNTER    
-//   II.O  - DELETE POST 
+//   II.G  - GET DRAFT POST COUNT 
+//   II.H  - GET PUBLISHED POST COUNT  
+//   II.I  - SEARCH POSTS
+//   II.J  - (READ) DISPLAY POSTS (GENERAL)
+//   II.K  - (READ) DISPLAY POST (GENERAL)
+//   II.L  - (READ) DISPLAY POSTS TABLE DATA (ADMIN)
+//   II.M  - UPDATE POST
+//   II.N  - UPDATE POST STATUS 
+//   II.O  - (UPDATE) INCREMENT POST'S COMMENT COUNTER
+//   II.P  - (UPDATE) DECREMENT POST'S COMMENT COUNTER    
+//   II.Q  - DELETE POST 
 //
 // III.  CATEGORY FUNCTIONS:
 //   III.A - CREATE CATEGORY
 //   III.B - GET CATEGORY
 //   III.C - GET CATEGORIES
-//   III.C - GET CATEGORY COUNT  
-//   III.D - (READ) DISPLAY CATEGORY TABLE DATA (ADMIN)
-//   III.E - (READ) DISPLAY CATEGORY OPTIONS (ADMIN)
-//   III.F - (READ) DISPLAY CATEGORY LINKS (GENERAL)
-//   III.G - UPDATE CATEGORY
-//   III.H - DELETE CATEGORY
+//   III.D - GET CATEGORY COUNT  
+//   III.E - (READ) DISPLAY CATEGORY TABLE DATA (ADMIN)
+//   III.F - (READ) DISPLAY CATEGORY OPTIONS (ADMIN)
+//   III.G - (READ) DISPLAY CATEGORY LINKS (GENERAL)
+//   III.H - UPDATE CATEGORY
+//   III.I - DELETE CATEGORY
 //
 // IV.   COMMENT FUNCTIONS:
 //   IV.A  - CREATE COMMENT
@@ -50,19 +52,19 @@
 //   IV.K  - (UPDATE) APPROVE COMMENT (ADMIN)
 //   IV.L  - (UPDATE) DENY COMMENT (ADMIN)
 //   IV.M  - DELETE COMMENT (ADMIN)
+//   IV.N  - DELETE COMMENTS
 //
 //  V.   USER FUNCTIONS:
-//   V.A  - CREATE USER
-//   V.B  - GET USER
-//   V.C  - GET USERS
-//   V.D  - GET USER ID BY USERNAME:
-//   V.E  - GET USER BY USERNAME 
-//   V.F  - GET USER COUNT
-//   V.G  - GET SUBSCRIBERS COUNT
-//   V.H  - SEARCH USER BY USERNAME
-//   V.I  - (READ) DISPLAY USERS TABLE DATA ( ADMIN )
-//   V.J  - UPDATE USER
-//   V.K  - DELETE USER 
+//   V.A   - CREATE USER
+//   V.B   - GET USER
+//   V.C   - GET USERS
+//   V.D   - GET USER BY USERNAME 
+//   V.E   - GET USER COUNT
+//   V.F   - GET SUBSCRIBERS COUNT
+//   V.G   - SEARCH USER BY USERNAME
+//   V.H   - (READ) DISPLAY USERS TABLE DATA ( ADMIN )
+//   V.I   - UPDATE USER
+//   V.J   - DELETE USER 
 //
 //  VI.  LOGIN FUNCTIONS:
 //   VI.A  - CLEAN LOGIN VALUES
@@ -70,9 +72,9 @@
 //   VI.C  - SESSIONIZE USER DATA   
 //
 //  VII. PROFILE FUNCTIONS:
-//   VII.A  - CREATE PROFILE
-//   VII.B  - GET PROFILE
-//   VII.C  - UPDATE PROFILE 
+//   VII.A - CREATE PROFILE
+//   VII.B - GET PROFILE
+//   VII.C - UPDATE PROFILE 
 //
 ///////////////////////////////////////////////////////////////////////
 
@@ -105,6 +107,10 @@
         $result = mysqli_query($connection, $query);
     
         confirmQuery( $result );
+
+        $post_id = mysqli_insert_id($connection);
+
+        return $post_id;
     }
 
   // II.B - GET POST:
@@ -241,7 +247,7 @@
         return $count;
     }    
 
-  // II.G - GET PUBLISHED POST COUNT:
+  // II.H - GET PUBLISHED POST COUNT:
   // ( $limit is Defined in includes/constants )
     function getPublishedPostCount() {
         global $connection;
@@ -257,7 +263,7 @@
         return $count;
     }         
 
-  // II.H - SEARCH POSTS:
+  // II.I - SEARCH POSTS:
   // ( $limit is Defined in includes/constants )
     function searchPosts( $search, $orderBy, $order, $limit ) {
         global $connection;
@@ -298,7 +304,7 @@
         }   
     }
 
-  // II.I - (READ) DISPLAY POSTS ( GENERAL ):
+  // II.J - (READ) DISPLAY POSTS ( GENERAL ):
     function displayPosts( $posts ) {  
         global $logged_in;
         $counter = 0;
@@ -350,7 +356,7 @@
         }
     }
 
-  // II.J - (READ) DISPLAY POST ( GENERAL ):
+  // II.K - (READ) DISPLAY POST ( GENERAL ):
     function displayPost( $post ) { 
                 global $logged_in;        
                  $post_id            = $post['post_id'];
@@ -388,7 +394,7 @@
                     <hr> <?php         
     }     
 
-  // II.K - (READ) DISPLAY POSTS TABLE DATA ( ADMIN ):
+  // II.L - (READ) DISPLAY POSTS TABLE DATA ( ADMIN ):
     function displayPostsTable( $posts ) {  
         global $logged_in;
         $logged_in_post = null;
@@ -412,6 +418,7 @@
             $cat_title = getCategory( $post_category_id );
         
             $table_row  = "<tr>";
+            $table_row .= "<td><input name='checkBoxArray[]' class='checkBoxes' type='checkbox' value='{$post_id}'></td>";
             $table_row .= "<td>{$post_id}</td>";
             $table_row .= "<td><a href='admin_posts.php?author={$post_author}{$logged_in_post}'>{$post_author}</td>";
             $table_row .= "<td><a href='../post.php?post_id={$post_id}{$logged_in_post}'>{$post_title}</a></td>";
@@ -430,7 +437,7 @@
         }
     }
 
-  // II.L - UPDATE POST: ( May need to relook at $status/$count later - 
+  // II.M - UPDATE POST: ( May need to relook at $status/$count later - 
   //                      though should be separate and dynamic );
     function updatePost( $cat_id, $title, $status, $author, $image, $image_desc, $tags, $content, $post_id ) {
         global $connection;
@@ -465,12 +472,26 @@
         $result = mysqli_query($connection, $query);
 
         confirmQuery( $result );
+    }
+
+  // II.N - UPDATE POST STATUS: 
+    function updatePostStatus( $post_id, $option ) {
+        global $connection;
+        global $logged_in;
+        
+        $query  = "UPDATE posts SET ";
+        $query .= "post_status = '{$option}' ";
+        $query .= "WHERE post_id = {$post_id} ";
+
+        $result = mysqli_query($connection, $query);
+
+        confirmQuery( $result );
 
         // REFRESHES THE PAGE
         header("location: admin_posts.php?{$logged_in}");
     }
   
-  // II.M - (UPDATE) INCREMENT POST'S COMMENT COUNTER:
+  // II.O - (UPDATE) INCREMENT POST'S COMMENT COUNTER:
     function incrementCommentCount( $post_id ) {
         global $connection;
         
@@ -487,7 +508,7 @@
         confirmQuery( $result );
     }
 
-  // II.N - (UPDATE) DECREMENT POST'S COMMENT COUNTER:
+  // II.P - (UPDATE) DECREMENT POST'S COMMENT COUNTER:
     function decrementCommentCount( $post_id ) {
         global $connection;
         
@@ -504,7 +525,7 @@
         confirmQuery( $result );
     }
 
-  // II.O - DELETE POST:
+  // II.Q - DELETE POST:
     function deletePost( $id ) {
         global $logged_in;
         global $connection;
@@ -515,6 +536,8 @@
         $result = mysqli_query($connection, $query);
 
         confirmQuery( $result );
+
+        deleteComments($id);
         
         // REFRESHES THE PAGE
         header("location: admin_posts.php?{$logged_in}");
@@ -998,6 +1021,19 @@
         header("location: admin_comments.php?{$logged_in}");
     }
 
+  // IV.N DELETE COMMENTS
+    function deleteComments( $post_id ) {
+        global $logged_in;
+        global $connection;
+
+        $query  = "DELETE FROM comments ";
+        $query .= "WHERE comment_post_id = {$post_id} ";
+
+        $result = mysqli_query($connection, $query);
+
+        confirmQuery( $result );
+    }    
+
 // ====================================================================
 // V.   USER FUNCTIONS
 // ====================================================================
@@ -1012,6 +1048,10 @@
         $result = mysqli_query($connection, $query_users);
     
         confirmQuery( $result );
+
+        $user_id = mysqli_insert_id($connection);
+
+        return $user_id; 
     }
 
   // V.B - GET USER:
@@ -1048,24 +1088,6 @@
         confirmQuery( $result );
         
         return $result;
-    }
-
-  // V.D - GET USER ID BY USERNAME:
-    function getUserIdByUsername( $username ) {
-        global $connection;
-
-        $query = "SELECT * FROM users ";
-        $query .= "WHERE username = '{$username}' ";
-
-        $result = mysqli_query( $connection, $query );
-        
-        confirmQuery( $result );
-
-        $user =  mysqli_fetch_assoc( $result );
-
-        $user_id = $user['user_id'];
-
-        return $user_id;
     }
 
   // V.E - GET USER BY USERNAME:

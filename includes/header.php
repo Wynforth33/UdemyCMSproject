@@ -12,7 +12,6 @@ $logged_in = null;
 if (isset($_GET['user'])){
     $logged_in = "user={$_GET['user']}";
 }
-
 ?>
 
 

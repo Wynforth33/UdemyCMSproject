@@ -1,0 +1,10 @@
+/* UNIVERSAL STYLES (ADMIN) */
+
+#bulkOptionsContainer {
+	padding-bottom: 15px; 
+	padding-left: 0;
+}
+
+#bulkOptionsButtons input {
+	margin-right: 10px;
+}

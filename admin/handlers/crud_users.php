@@ -28,9 +28,7 @@
         // FUNCTION MOVES IMAGE FROM TEMPORARY LOCATION INTO GIVEN FOLDER WITH GIVEN NAME
         move_uploaded_file( $user_image_temp, "$images_dir/$user_image" ); 
 
-        createUser( $username, $user_password, $user_fname, $user_lname, $user_email, $user_image, $user_role );
-
-        $user_id = getUserIdByUsername( $username );
+        $user_id = createUser( $username, $user_password, $user_fname, $user_lname, $user_email, $user_image, $user_role );
 
         createProfile( $user_id, $user_about_me, $user_my_education, $user_my_work );
     }

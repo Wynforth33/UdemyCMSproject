@@ -2,31 +2,16 @@
 
 <!--SCRIPTS 
 ====================================================-->
-    <!-- jQuery -->
+    <!-- JQUERY LOCAL -->
     <script src="js/jquery.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
+    <!-- BOOTSTRAP CORE JAVASCRIPT LOCAL -->
     <script src="js/bootstrap.min.js"></script>
-	<script>
-		// Gather DOM References
-        var password = document.querySelector("#password");
-        var toggle   = document.querySelector("#show-password");
 
-        // NOTE: the "(input)" event doesn't work on checkboxes in Safari or IE. As such, 
-        // we use the "(click)" event to make this work cross-browser.
-        toggle.addEventListener("click", handleToggleClick, false);
+    <!-- CK5 WYSIWIG EDITOR CDN - "https://ckeditor.com/docs/ckeditor5/latest/builds/guides/overview.html#classic-editor" (Documentation) -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/12.0.0/classic/ckeditor.js"></script>
 
-        // We handle the toggle click, changing the TYPE of password input. 
-        function handleToggleClick(e) {
-            if ( this.checked ) {
-                console.warn( "Change input 'type' to: Text");
-                password.type = "text";
-            } else {
-                console.warn( "Change input 'type' to: Password");
-                password.type = "password";
-            }
-        }
-	</script>
+    <!-- GENERAL APPLICATION SCRIPTS -->
+    <script src="js/scripts.js"></script>
   </body>
-
 </html>

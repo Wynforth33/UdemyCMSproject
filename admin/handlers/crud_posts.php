@@ -13,7 +13,7 @@
         // FUNCTION MOVES IMAGE FROM TEMPORARY LOCATION INTO GIVEN FOLDER WITH GIVEN NAME
         move_uploaded_file( $post_image_temp, "../images/$post_image" ); 
 
-        createPost( $post_category_id, $post_title, $post_author, $post_image, $post_image_desc, $post_tags, $post_content );
+        $post_id = createPost( $post_category_id, $post_title, $post_author, $post_image, $post_image_desc, $post_tags, $post_content );
     }
 
     // (READ) 'GET POST' 
@@ -42,6 +42,20 @@
         }
 
         updatePost( $post_category_id, $post_title, $post_status, $post_author, $post_image, $post_image_desc, $post_tags, $post_content, $post_id );
+    }
+
+    // BULK UPDATE/DELETE POSTS
+    if( isset( $_POST['checkBoxArray'] ) ) {
+       $check_box_array = $_POST['checkBoxArray']; 
+       $bulk_options = $_POST['bulk_options'];
+
+       foreach( $check_box_array as $post_id){
+            if ( $bulk_options === 'delete' ){
+                deletePost($post_id);
+            } else {
+                updatePostStatus($post_id, $bulk_options); 
+            }      
+       }
     }
 
     // 'DELETE POST' 

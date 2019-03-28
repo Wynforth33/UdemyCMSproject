@@ -3,11 +3,16 @@
     $categories = getCategories( null );
 ?>
 
-<!-- CONTENT 
-======================================================================-->
 <h2>Edit Post</h2>
+
+<?php 
+//  USER CREATED NOTIFICATION (This handler required here for placement of notification and link)
+    if( isset( $_POST[ 'update_post' ] ) ) { 
+        echo "<p class='bg-success'>Post Updated: <a href='../post.php?{$logged_in}&post_id={$post_id}'>View Post</a> or <a href='admin_posts.php?{$logged_in}'>View All Posts</a></p>";
+    }  
+?>
   
-<form action="admin_posts.php" method="Post" enctype="multipart/form-data">
+<form action="" method="Post" enctype="multipart/form-data">
     
     <div class="form-group">
         <label for="post_title">Title</label>
@@ -62,7 +67,7 @@
     
     <div class="form-group">
         <label for="post_content">Content</label>
-        <textarea class="form-control" name="post_content" id="" cols="30" rows ="10"><?php echo $post[ 'post_content' ]; ?>
+        <textarea class="form-control" name="post_content" id="body" cols="30" rows ="10"><?php echo $post[ 'post_content' ]; ?>
         </textarea>
     </div><!-- .form-group -->
     
@@ -71,7 +76,4 @@
     </div><!-- .form-group -->
      
 </form>
-
-<!--=====================================================================
-END CONTENT -->
 

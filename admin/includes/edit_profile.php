@@ -65,17 +65,17 @@
 
     <div class="form-group">
         <label for="about_me">About Me:</label>
-        <input type="textarea" class="form-control" name="about_me" value="<?php echo $user_profile['about_me'] ?>">
+        <input type="textarea" class="form-control" id="body" name="about_me" value="<?php echo $user_profile['about_me'] ?>">
     </div><!-- .form-group -->
 
     <div class="form-group">
         <label for="my_education">My Education:</label>
-        <input type="textarea" class="form-control" name="my_education" value="<?php echo $user_profile['my_education'] ?>">
+        <input type="textarea" class="form-control" id="body" name="my_education" value="<?php echo $user_profile['my_education'] ?>">
     </div><!-- .form-group -->
 
     <div class="form-group">
         <label for="my_work">My Work:</label>
-        <input type="textarea" class="form-control" name="my_work" value="<?php echo $user_profile['my_work'] ?>">
+        <input type="textarea" class="form-control" id="body" name="my_work" value="<?php echo $user_profile['my_work'] ?>">
     </div><!-- .form-group -->
 
     

@@ -25,6 +25,22 @@
                    <li>
                        <a href="admin?<?php echo $logged_in; ?>">admin</a>
                    </li>
+
+                   <?php 
+
+                      if( isset( $_SESSION['role'] ) ) {
+                        $role = $_SESSION['role'];
+
+                        if ( $role === 'admin' ) {
+
+                          if( isset( $_GET['post_id'] ) ) {
+                            $post_id = $_GET['post_id'];
+
+                            echo "<li><a href='admin/admin_posts.php?source=edit_post&post_id={$post_id}&{$logged_in}'>Edit Post</a></li>";
+                          }
+                        }
+                      } 
+                   ?>
               
             </ul>
         </div><!-- .navbar-collapse -->
