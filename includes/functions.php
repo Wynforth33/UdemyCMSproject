@@ -96,8 +96,7 @@
 // II.  POST FUNCTIONS
 // ====================================================================
 
-  // II.A - CREATE POST: ( May need to relook at $status/$count later - 
-  //                     though should be separate and dynamic );
+  // II.A - CREATE POST:
     function createPost( $cat_id, $title, $author, $image, $image_desc, $tags, $content ) {
         global $connection; 
         
@@ -137,7 +136,6 @@
     }
   
   // II.C - GET POSTS:
-  // ( $limit is Defined in includes/constants )
     function getPosts( $orderBy, $order, $limit ) {
         global $connection;
         
@@ -162,7 +160,6 @@
     }
 
   // II.D - GET POSTS BY CATEGORY:
-  // ( $limit is Defined in includes/constants )
     function getPostsByCategory( $cat_id, $orderBy, $order, $limit ) {
         global $connection;
         
@@ -189,7 +186,6 @@
     }
 
   // II.E - GET POSTS BY AUTHOR:
-  // ( $limit is Defined in includes/constants )
     function getPostsByAuthor( $author, $orderBy, $order, $limit ) {
         global $connection;
         
@@ -216,7 +212,6 @@
     }
 
   // II.F - GET POST COUNT:
-  // ( $limit is Defined in includes/constants )
     function getPostCount() {
         global $connection;
         
@@ -232,7 +227,6 @@
     }    
 
   // II.G - GET DRAFT POST COUNT:
-  // ( $limit is Defined in includes/constants )
     function getDraftPostCount() {
         global $connection;
         
@@ -248,7 +242,6 @@
     }    
 
   // II.H - GET PUBLISHED POST COUNT:
-  // ( $limit is Defined in includes/constants )
     function getPublishedPostCount() {
         global $connection;
         
@@ -264,7 +257,6 @@
     }         
 
   // II.I - SEARCH POSTS:
-  // ( $limit is Defined in includes/constants )
     function searchPosts( $search, $orderBy, $order, $limit ) {
         global $connection;
         
@@ -437,8 +429,7 @@
         }
     }
 
-  // II.M - UPDATE POST: ( May need to relook at $status/$count later - 
-  //                      though should be separate and dynamic );
+  // II.M - UPDATE POST:
     function updatePost( $cat_id, $title, $status, $author, $image, $image_desc, $tags, $content, $post_id ) {
         global $connection;
         global $logged_in;
@@ -594,7 +585,6 @@
     }
   
   // III.C - GET CATEGORIES: 
-  // ( $limit is Defined in includes/constants )
     function getCategories( $limit ) {
         global $connection;
         
@@ -762,7 +752,6 @@
     }
 
   // IV.C - GET COMMENTS:
-  // ( $limit is Defined in 'includes/constants' )
     function getComments( $orderBy, $order, $limit ) {
         global $connection;
         
@@ -787,7 +776,6 @@
     }
   
   // IV.D - GET COMMENTS BY POST (ADMIN):
-  // ( $limit is Defined in includes/constants )
     function getCommentsByPost( $post_id, $orderBy, $order, $limit ) {
         global $connection;
         
@@ -814,7 +802,6 @@
     }
 
   // IV.E - GET APPROVED COMMENTS BY POST (GENERAL):
-  // ( $limit is Defined in includes/constants )
     function getApprovedCommentsByPost( $post_id, $orderBy, $order, $limit ) {
         global $connection;
         
@@ -843,7 +830,6 @@
     }
 
   // IV.F - GET COMMENTS BY AUTHOR:
-  // ( $limit is Defined in includes/constants )
     function getCommentsByAuthor( $author, $orderBy, $order, $limit ) {
         global $connection;
         
@@ -1189,8 +1175,7 @@
         }
     }
 
-  // V.J - UPDATE USER: ( May need to relook at $status/$count later - 
-  //                      though should be separate and dynamic );
+  // V.J - UPDATE USER:
     function updateUser( $id, $username, $password, $fname, $lname, $email, $image, $role ) {
         global $logged_in;
         global $connection;

@@ -1,6 +1,3 @@
-<!-- CONTENT 
-======================================================================-->
-
 <h2>Create User</h2>
 
 <?php 
@@ -57,18 +54,18 @@
     </div><!-- .form-group -->
 
     <div class="form-group">
-        <label for="about_me">About Me:</label>
-        <textarea rows="3" class="form-control" id="body" name="about_me" value=""></textarea>
-    </div><!-- .form-group -->
-
-    <div class="form-group">
         <label for="my_education">My Education:</label>
-        <textarea rows="3" class="form-control" id="body" name="my_education" value=""></textarea>
+        <textarea rows="3" class="form-control" name="my_education" value=""></textarea>
     </div><!-- .form-group -->
 
     <div class="form-group">
         <label for="my_work">My Work:</label>
-        <textarea rows="3" class="form-control" id="body" name="my_work" value=""></textarea>
+        <textarea rows="3" class="form-control" name="my_work" value=""></textarea>
+    </div><!-- .form-group -->
+
+    <div class="form-group">
+        <label for="about_me">About Me:</label>
+        <textarea rows="3" class="form-control" id="body" name="about_me" value=""></textarea>
     </div><!-- .form-group -->
 
     <div class="form-group">
@@ -77,5 +74,3 @@
      
 </form>
 
-<!--=====================================================================
-END CONTENT -->

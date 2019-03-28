@@ -7,53 +7,36 @@
  // HANDLERS
     include "handlers/crud_comments.php";
     include "handlers/comments_sorting.php";
-?>                                                               
+?>     
+
+<!-- Navigation -->
+<?php include "includes/admin_navbar.php" ?>                                                          
                                                              
 <!-- CONTENT 
 ======================================================================-->                                                                      
-    <div id="wrapper">
+    <?php 
+    // 'ROUTING' [HANDLERS]    
+        if( isset( $_GET[ 'source' ] ) ) {
+            $source = $_GET[ 'source' ];
+        }
 
-        <!-- Navigation -->
-        <?php include "includes/admin_navbar.php" ?>
+        switch( $source ) {
+            case 'add_comment';   
+            include "includes/add_comment.php";
+            break;
 
-        <div id="page-wrapper">
-            <div class="container-fluid">
-                <!-- Page Heading -->
-                <div class="row">
-                    <div class="col-lg-12">
-                       
-                        <h1 class="page-header">
-                            Welcome to Administration
-                            <small><?php echo $_SESSION['username'] ?></small>
-                        </h1>
-                        
-                        <?php 
-                        // 'ROUTING' [HANDLERS]    
-                            if( isset( $_GET[ 'source' ] ) ) {
-                                $source = $_GET[ 'source' ];
-                            }
+            case 'edit_comment';
+            include "includes/edit_comment.php";
+            break;
 
-                            switch( $source ) {
-                                case 'add_comment';   
-                                include "includes/add_comment.php";
-                                break;
+            default: 
+            include "includes/comments_table.php";
+            break;
+        }   
+    ?>                       
+<!--=====================================================================
+END CONTENT -->
 
-                                case 'edit_comment';
-                                include "includes/edit_comment.php";
-                                break;
-
-                                default: 
-                                include "includes/comments_table.php";
-                                break;
-                            }   
-                        ?>                       
-                                    
-                    </div><!-- .col-lg-12 -->
-                </div><!-- .row -->
-            </div><!-- .container-fluid -->
-        </div><!-- #page-wrapper -->
-    
 <?php include "includes/admin_footer.php" ?>
 
-<!--=====================================================================
- END CONTENT -->
+
