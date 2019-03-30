@@ -39,8 +39,11 @@
                     <input name="password" type="password" id="password" class="form-control" placeholder="Enter Password">
 
                     <span class="input-group-btn">
-                        <button name="login" class="btn btn-primary" type="submit">Login!</button>
-                    </span>  
+                        <button name="login" class="btn btn-primary" type="submit">Login</button>
+                    </span> 
+                    <span class="input-group-btn">
+                        <a role="button" class="btn btn-success" href="registration.php">Sign Up</a>
+                    </span> 
                 </div><!-- .input-group --> 
                 <div class="input-group">
                     <label for="show-password">

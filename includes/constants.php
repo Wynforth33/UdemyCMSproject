@@ -8,13 +8,15 @@
 
   // SETTINGS : Modify the values to Change how Posts are displayed.  
     // POST DISPLAY SETTINGS
+    define("GEN_POST_LIMIT", 5);
+
     // HOME PAGE
     define("HOME_POST_LIMIT", 5);
     define("HOME_POST_ORDERBY", "post_date");
     define("HOME_POST_ORDER", "DESC");
     
     // SEARCH PAGE
-    define("SEARCH_POST_LIMIT", 20);
+    define("SEARCH_POST_LIMIT", 5);
     define("SEARCH_POST_ORDERBY", "post_date");
     define("SEARCH_POST_ORDER", "DESC");
 
@@ -24,7 +26,7 @@
     define("CAT_POST_ORDER", "DESC");
     
     // AUTHOR PAGE
-    define("AUTHOR_POST_LIMIT", 20);
+    define("AUTHOR_POST_LIMIT", 5);
     define("AUTHOR_POST_ORDERBY", "post_date");
     define("AUTHOR_POST_ORDER", "DESC");
 
@@ -43,6 +45,16 @@
     // SEARCH PAGE
     define("SEARCH_HEAD", "SEARCH");
     define("SEARCH_DESC", "View your results");
+
+  // REGISTRATION  
+    // COST PARAMETER 
+    define("HASH", "$2y$10$");
+
+    // RANDOM SALTS
+    define("SALT1", "rbhR1Sc11nBdtBAGuOYI4h");
+    define("SALT2", "HCreiOuxWKbYw79tEdAdHm");
+    define("SALT3", "X9EJz5tpW8gxyDZSYhlZlP");
+    define("SALT4", "iq2TwaPGzeL5TIFNnvqTfa");
 
 //////////////////////////////////////////////////////////////////
 // ADMINISTRATION

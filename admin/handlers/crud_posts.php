@@ -45,17 +45,33 @@
     }
 
     // BULK UPDATE/DELETE POSTS
-    if( isset( $_POST['checkBoxArray'] ) ) {
+    if( isset( $_POST['checkBoxArray'] ) && !empty($_POST['bulk_options']) ) {
        $check_box_array = $_POST['checkBoxArray']; 
        $bulk_options = $_POST['bulk_options'];
 
        foreach( $check_box_array as $post_id){
             if ( $bulk_options === 'delete' ){
                 deletePost($post_id);
+            } elseif ( $bulk_options === 'clone') {
+               $post = getPost($post_id);
+               $post_cat_id     = $post['post_category_id'];
+               $post_title      = $post['post_title'];
+               $post_author     = $post['post_author'];
+               $post_image      = $post['post_image'];
+               $post_image_desc = $post['post_image_desc'];
+               $post_tags       = $post['post_tags'];
+               $post_content    = $post['post_content'];
+
+               $post_id = createPost( $post_cat_id, $post_title, $post_author, $post_image, $post_image_desc, $post_tags, $post_content );
+
             } else {
-                updatePostStatus($post_id, $bulk_options); 
-            }      
+                updatePostStatus($post_id, $bulk_options);
+            }  
+
        }
+
+        // REFRESHES THE PAGE
+        header("location: admin_posts.php?{$logged_in}");
     }
 
     // 'DELETE POST' 

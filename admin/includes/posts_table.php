@@ -10,6 +10,7 @@
                 <option value="published">Publish</option>
                 <option value="draft">Draft</option>
                 <option value="delete">Delete</option>
+                <option value="clone">Clone</option>
             </select>       
         </div>
 
@@ -29,6 +30,7 @@
                 <th>Image</th>
                 <th>Tags</th>
                 <th>Comments</th>
+                <th>Views</th>
                 <th>Date</th>
                 <th>Edit</th>
                 <th>Delete</th>

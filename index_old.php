@@ -9,22 +9,12 @@
     <!-- Page Content -->
     <div class="container">
        
-        <?php 
-            $posts = getPosts( HOME_POST_ORDERBY, HOME_POST_ORDER, HOME_POST_LIMIT );
-            $post_count = getPostsCount();
-            $page = 1;
-        ?>
+        <?php $posts = getPosts( HOME_POST_ORDERBY, HOME_POST_ORDER, HOME_POST_LIMIT ) ?>
 
         <div class="row">
 
             <!-- Blog Entries Column -->
             <div class="col-md-8">
-                <?php
-                    if ( isset( $_GET['page'] ) ) {
-                        $page = $_GET['page'];
-                        $posts = getPostsByPage( $page );
-                    } 
-                ?>
 
                 <h1 class="page-header"><?php echo HOME_HEAD ?> <small><?php echo HOME_DESC ?></small></h1>
                 
@@ -39,6 +29,4 @@
 
         <hr>
 
-        <?php include "includes/widgets/pager.php" ?>
-     
 <?php include "includes/footer.php" ?>

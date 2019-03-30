@@ -3,18 +3,18 @@
 
     // 'CREATE USER'
     if( isset( $_POST[ 'create_user' ] ) ) { 
-        $username          = $_POST[ 'username' ];
-        $user_password     = $_POST[ 'user_password' ];
-        $user_fname        = $_POST[ 'user_fname' ];
-        $user_lname        = $_POST[ 'user_lname' ];
-        $user_image        = $_FILES[ 'user_image' ][ 'name' ];
-        $user_image_temp   = $_FILES[ 'user_image' ][ 'tmp_name' ];
-        $user_image_error  = $_FILES[ 'user_image' ][ 'error' ];
-        $user_email        = $_POST[ 'user_email' ];
-        $user_role         = $_POST[ 'user_role' ];
-        $user_about_me     = $_POST[ 'about_me' ];
-        $user_my_education = $_POST[ 'my_education' ];
-        $user_my_work      = $_POST[ 'my_work' ];
+        $username          = cleanString($_POST[ 'username' ]);
+        $user_password     = cleanString($_POST[ 'user_password' ]);
+        $user_fname        = cleanString($_POST[ 'user_fname' ]);
+        $user_lname        = cleanString($_POST[ 'user_lname' ]);
+        $user_image        = cleanString($_FILES[ 'user_image' ][ 'name' ]);
+        $user_image_temp   = cleanString($_FILES[ 'user_image' ][ 'tmp_name' ]);
+        $user_image_error  = cleanString($_FILES[ 'user_image' ][ 'error' ]);
+        $user_email        = cleanString($_POST[ 'user_email' ]);
+        $user_role         = cleanString($_POST[ 'user_role' ]);
+        $user_about_me     = cleanString($_POST[ 'about_me' ]);
+        $user_my_education = cleanString($_POST[ 'my_education' ]);
+        $user_my_work      = cleanString($_POST[ 'my_work' ]);
 
         // CHECK FOR ERROR CODES ON IMAGE UPLOAD
         if ( $user_image_error && $user_image_error === 1 ) {
@@ -25,10 +25,12 @@
             die;
         }
 
+        $crypted_password = encryptPassword($user_password, HASH, SALT1);
+        
         // FUNCTION MOVES IMAGE FROM TEMPORARY LOCATION INTO GIVEN FOLDER WITH GIVEN NAME
         move_uploaded_file( $user_image_temp, "$images_dir/$user_image" ); 
 
-        $user_id = createUser( $username, $user_password, $user_fname, $user_lname, $user_email, $user_image, $user_role );
+        $user_id = createUser( $username, $crypted_password, $user_fname, $user_lname, $user_email, $user_image, $user_role );
 
         createProfile( $user_id, $user_about_me, $user_my_education, $user_my_work );
     }
@@ -67,7 +69,9 @@
           move_uploaded_file( $user_image_temp, "$images_dir/$user_image" ); 
         }
 
-        updateUser( $user_id, $username, $user_password, $user_fname, $user_lname, $user_email, $user_image, $user_role );
+        $crypted_password = encryptPassword($user_password, HASH, SALT1);
+
+        updateUser( $user_id, $username, $crypted_password, $user_fname, $user_lname, $user_email, $user_image, $user_role );
     }
 
     // 'DELETE USER' 

@@ -23,7 +23,7 @@
                    <?php displayCategoryLinks( $categories ) ?>
                    
                    <li>
-                       <a href="admin?<?php echo $logged_in; ?>">admin</a>
+                       <a href="admin/index.php?<?php echo $logged_in; ?>">Admin</a>
                    </li>
 
                    <?php 

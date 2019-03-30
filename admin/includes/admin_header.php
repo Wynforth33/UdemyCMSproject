@@ -5,7 +5,6 @@
   // In Charge of Buffering Requests in the headers of scripts so that when done 
   // with scripts it will send everything at one time rather than one at a time  
     ob_start();
-    
     session_start();
 
     $logged_in = null;
@@ -63,4 +62,8 @@
     
 </head>
 <body>
-     <div id="wrapper">
+    <div id='load-screen'>
+        <div id='loading'></div>
+    </div>
+
+    <div id="wrapper">

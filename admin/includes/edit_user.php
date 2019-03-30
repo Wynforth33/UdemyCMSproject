@@ -2,9 +2,9 @@
     $user_id = 0;
     $user    = null;
     
-    if(isset($_SESSION['id'] )){
-        $user_id = $_SESSION['id'];
-        $user = getUser($_SESSION['id']);
+    if(isset($_GET['user_id'] )){
+        $user_id = $_GET['user_id'];
+        $user = getUser($user_id);
     }
 
     $user_role = $user[ 'user_role' ];
@@ -30,7 +30,6 @@
         <label for="user_role">Role</label>
         <select name="user_role">
             <option value="<?php echo $user_role; ?>"><?php echo $user_role; ?></option>
-
             <?php if ($user_role === 'admin' ) : ?>
               
               <option value="subscriber">subscriber</option>
@@ -44,7 +43,7 @@
             <?php else : ?>
 
               <option value="admin">admin</option>
-              <option value="test user">subscriber</option>  
+              <option value="subscriber">subscriber</option>  
 
             <?php endif; ?>
         </select>
@@ -67,13 +66,13 @@
     </div><!-- .form-group -->
 
     <div class="form-group">
-        <label for="user_password">Password</label>
+        <label for="user_password">Change Password</label>
         <input type="password" id="password" class="form-control" name="user_password" value="<?php echo $user[ 'user_password' ]; ?>">
         <label for="show-password">
             <input type="checkbox" id="show-password" />
             Show Password
         </label>
-        
+    
     </div><!-- .form-group -->
     
     <div class="form-group">

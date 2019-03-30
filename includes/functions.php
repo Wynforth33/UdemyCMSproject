@@ -7,6 +7,8 @@
 // 
 // I.   UTILITY FUNCTIONS:
 //   I.A   - CONFIRM QUERY
+//   I.B   - CLEAN VALUE
+//   I.C   - ENCRYPT PASSWORD:
 //
 // II.   POST FUNCTIONS:
 //   II.A  - CREATE POST
@@ -16,16 +18,19 @@
 //   II.E  - GET POSTS BY AUTHOR
 //   II.F  - GET POST COUNT
 //   II.G  - GET DRAFT POST COUNT 
-//   II.H  - GET PUBLISHED POST COUNT  
-//   II.I  - SEARCH POSTS
-//   II.J  - (READ) DISPLAY POSTS (GENERAL)
-//   II.K  - (READ) DISPLAY POST (GENERAL)
-//   II.L  - (READ) DISPLAY POSTS TABLE DATA (ADMIN)
-//   II.M  - UPDATE POST
-//   II.N  - UPDATE POST STATUS 
-//   II.O  - (UPDATE) INCREMENT POST'S COMMENT COUNTER
-//   II.P  - (UPDATE) DECREMENT POST'S COMMENT COUNTER    
-//   II.Q  - DELETE POST 
+//   II.H  - GET PUBLISHED POST COUNT 
+//   II.I  - GET POSTS COUNT: 
+//   II.J  - GET POSTS BY PAGE:
+//   II.K  - SEARCH POSTS
+//   II.L  - (READ) DISPLAY POSTS (GENERAL)
+//   II.M  - (READ) DISPLAY POST (GENERAL)
+//   II.N  - (READ) DISPLAY POSTS TABLE DATA (ADMIN)
+//   II.O  - UPDATE POST
+//   II.P  - UPDATE POST STATUS 
+//   II.Q  - (UPDATE) INCREMENT POST'S COMMENT COUNTER
+//   II.R  - (UPDATE) DECREMENT POST'S COMMENT COUNTER
+//   II.S  - (UPDATE) INCREMENT POST'S VIEWS COUNTER:    
+//   II.T  - DELETE POST 
 //
 // III.  CATEGORY FUNCTIONS:
 //   III.A - CREATE CATEGORY
@@ -56,15 +61,16 @@
 //
 //  V.   USER FUNCTIONS:
 //   V.A   - CREATE USER
-//   V.B   - GET USER
-//   V.C   - GET USERS
-//   V.D   - GET USER BY USERNAME 
-//   V.E   - GET USER COUNT
-//   V.F   - GET SUBSCRIBERS COUNT
-//   V.G   - SEARCH USER BY USERNAME
-//   V.H   - (READ) DISPLAY USERS TABLE DATA ( ADMIN )
-//   V.I   - UPDATE USER
-//   V.J   - DELETE USER 
+//   V.B   - REGISTER USER:
+//   V.c   - GET USER
+//   V.D   - GET USERS
+//   V.E   - GET USER BY USERNAME 
+//   V.F   - GET USER COUNT
+//   V.G   - GET SUBSCRIBERS COUNT
+//   V.H   - SEARCH USER BY USERNAME
+//   V.I   - (READ) DISPLAY USERS TABLE DATA ( ADMIN )
+//   V.J   - UPDATE USER
+//   V.K   - DELETE USER 
 //
 //  VI.  LOGIN FUNCTIONS:
 //   VI.A  - CLEAN LOGIN VALUES
@@ -82,7 +88,7 @@
 // I.   UTILITY FUNCTIONS
 // ====================================================================
    
-  // I.A - CONFIRM QUERY
+  // I.A - CONFIRM QUERY:
     function confirmQuery( $result ) {
         global $connection;
         
@@ -90,6 +96,24 @@
         if(!$result){
             die("Query Failed!" . mysqli_error($connection));
         }
+    }
+
+  // I.B - CLEAN VALUE:
+    function cleanString( $string ){
+        global $connection;
+
+        $clean_string = mysqli_real_escape_string( $connection, $string );
+
+        return $clean_string;
+    }  
+
+  // I.C - ENCRYPT PASSWORD:
+    function encryptPassword($password, $cost_param, $salt) {
+        $salted_hash = "{$cost_param}{$salt}";
+        
+        $crypted_password = crypt( $password, $salted_hash );
+
+        return $crypted_password;
     }
 
 // ====================================================================
@@ -254,9 +278,39 @@
         $count = mysqli_num_rows($result);
 
         return $count;
-    }         
+    }    
 
-  // II.I - SEARCH POSTS:
+  // II.I - GET POSTS COUNT:
+    function getPostsCount() {
+        global $connection;
+        
+        $query  = "SELECT * FROM posts ";
+
+        $result = mysqli_query( $connection, $query );
+        
+        confirmQuery( $result );
+        
+        $count = mysqli_num_rows($result);
+
+        return $count;
+    }      
+
+  // II.J - GET POSTS BY PAGE:
+    function getPostsByPage( $page ) {
+        global $connection;
+
+        $index = ($page-1) * 5; 
+        
+        $query  = "SELECT * FROM posts LIMIT {$index}, 5 ";
+
+        $result = mysqli_query( $connection, $query );
+        
+        confirmQuery( $result );
+        
+        return $result;
+    }  
+
+  // II.K - SEARCH POSTS:
     function searchPosts( $search, $orderBy, $order, $limit ) {
         global $connection;
         
@@ -296,10 +350,11 @@
         }   
     }
 
-  // II.J - (READ) DISPLAY POSTS ( GENERAL ):
+  // II.L - (READ) DISPLAY POSTS ( GENERAL ):
     function displayPosts( $posts ) {  
         global $logged_in;
         $counter = 0;
+        $logged_in_post = "";
             
         if ($logged_in) {
             $logged_in_post = "&{$logged_in}";
@@ -348,7 +403,7 @@
         }
     }
 
-  // II.K - (READ) DISPLAY POST ( GENERAL ):
+  // II.M - (READ) DISPLAY POST ( GENERAL ):
     function displayPost( $post ) { 
                 global $logged_in;        
                  $post_id            = $post['post_id'];
@@ -358,6 +413,7 @@
                  $post_image         = $post['post_image'];
                  $post_image_desc    = $post['post_image_desc'];
                  $post_content       = $post['post_content'];
+                 $post_views_count   = $post['post_views_count'];
 
                  $logged_in_post = null;
 
@@ -368,7 +424,7 @@
                     <!-- BLOG POST TEMPLATE -->
                     <h1 class="page-header"><?php echo $post_title; ?></h1>
                     <p class="lead">by <a href="author.php?author=<?php echo $post_author; ?><?php echo $logged_in_post; ?>"><?php echo $post_author; ?></a></p>
-                    <p><span class="glyphicon glyphicon-time"></span> <?php echo $post_date ?></p>
+                    <p><span class="glyphicon glyphicon-time"></span> <?php echo $post_date ?> | <span class="glyphicon glyphicon-eye-open"></span> <?php echo $post_views_count ?> </p>
 
                     <hr>
             
@@ -386,7 +442,7 @@
                     <hr> <?php         
     }     
 
-  // II.L - (READ) DISPLAY POSTS TABLE DATA ( ADMIN ):
+  // II.N - (READ) DISPLAY POSTS TABLE DATA ( ADMIN ):
     function displayPostsTable( $posts ) {  
         global $logged_in;
         $logged_in_post = null;
@@ -405,6 +461,7 @@
             $post_image_desc    = $row['post_image_desc'];
             $post_tags          = $row['post_tags'];
             $post_comment_count = $row['post_comment_count'];
+            $post_views_count   = $row['post_views_count'];
             $post_status        = $row['post_status'];
 
             $cat_title = getCategory( $post_category_id );
@@ -419,17 +476,17 @@
             $table_row .= "<td><img width='100' src='../images/{$post_image}' alt='{$post_image_desc}'></td>";
             $table_row .= "<td>{$post_tags}</td>";
             $table_row .= "<td>{$post_comment_count}</td>";
+            $table_row .= "<td>{$post_views_count}</td>";
             $table_row .= "<td>{$post_date}</td>";
             $table_row .= "<td><a href='admin_posts.php?source=edit_post&post_id={$post_id}{$logged_in_post}'>Edit</td>";
-            $table_row .= "<td><a href='admin_posts.php?delete={$post_id}{$logged_in_post}'>Delete</td>";
-            
+            $table_row .= "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete'); \" href='admin_posts.php?delete={$post_id}{$logged_in_post}'>Delete</td>";
             $table_row .= "</tr>";
         
             echo $table_row; 
         }
     }
 
-  // II.M - UPDATE POST:
+  // II.O - UPDATE POST:
     function updatePost( $cat_id, $title, $status, $author, $image, $image_desc, $tags, $content, $post_id ) {
         global $connection;
         global $logged_in;
@@ -465,7 +522,7 @@
         confirmQuery( $result );
     }
 
-  // II.N - UPDATE POST STATUS: 
+  // II.P - UPDATE POST STATUS: 
     function updatePostStatus( $post_id, $option ) {
         global $connection;
         global $logged_in;
@@ -482,7 +539,7 @@
         header("location: admin_posts.php?{$logged_in}");
     }
   
-  // II.O - (UPDATE) INCREMENT POST'S COMMENT COUNTER:
+  // II.Q - (UPDATE) INCREMENT POST'S COMMENT COUNTER:
     function incrementCommentCount( $post_id ) {
         global $connection;
         
@@ -499,7 +556,7 @@
         confirmQuery( $result );
     }
 
-  // II.P - (UPDATE) DECREMENT POST'S COMMENT COUNTER:
+  // II.R - (UPDATE) DECREMENT POST'S COMMENT COUNTER:
     function decrementCommentCount( $post_id ) {
         global $connection;
         
@@ -516,7 +573,20 @@
         confirmQuery( $result );
     }
 
-  // II.Q - DELETE POST:
+  // II.S - (UPDATE) INCREMENT POST'S VIEWS COUNTER:
+    function incrementViewsCount( $post_id ) {
+        global $connection;
+        
+        $query  = "UPDATE posts SET ";
+        $query .= "post_views_count = post_views_count + 1 ";
+        $query .= "WHERE post_id = {$post_id} ";
+        
+        $result = mysqli_query($connection, $query);
+
+        confirmQuery( $result );
+    }  
+
+  // II.T - DELETE POST:
     function deletePost( $id ) {
         global $logged_in;
         global $connection;
@@ -605,7 +675,7 @@
         return $result;
     }
 
-  // II.C - GET CATEGORY COUNT:
+  // III.D- GET CATEGORY COUNT:
     function getCategoryCount() {
         global $connection;
         
@@ -620,7 +690,7 @@
         return $count;
     } 
 
-  // III.D - (READ) DISPLAY CATEGORY TABLE DATA:
+  // III.E - (READ) DISPLAY CATEGORY TABLE DATA:
     function displayCategoryTable( $categories ) {
         global $logged_in;
         $logged_in_cat = null;
@@ -637,7 +707,7 @@
              $table_row  = "<tr>";
              $table_row .= "<td>{$cat_id}</td>";
              $table_row .= "<td><a href='../category.php?category={$cat_id}{$logged_in_cat}'>{$cat_title}</td>";
-             $table_row .= "<td><a href='admin_categories.php?delete={$cat_id}{$logged_in_cat}'>Delete</td>";
+             $table_row .= "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete'); \" href='admin_categories.php?delete={$cat_id}{$logged_in_cat}'>Delete</td>";
              $table_row .= "<td><a href='admin_categories.php?edit={$cat_id}{$logged_in_cat}'>Edit</td>";
              $table_row .= "</tr>";
              
@@ -645,7 +715,7 @@
          }
     }
 
-  // III.E - (READ) DISPLAY CATEGORY OPTIONS:
+  // III.F - (READ) DISPLAY CATEGORY OPTIONS:
     function displayCategoryOptions( $categories ) {
          while ( $row = mysqli_fetch_assoc( $categories ) ) {
              $cat_id    = $row['cat_id'];
@@ -657,7 +727,7 @@
          }
     }
 
-  // III.F - DISPLAY CATEGORY LINKS:
+  // III.G - DISPLAY CATEGORY LINKS:
     function displayCategoryLinks( $categories ) {
         global $logged_in;
         $logged_in_cat = null;
@@ -675,7 +745,7 @@
         }
     }
 
-  // III.G - UPDATE CATEGORY:
+  // III.H - UPDATE CATEGORY:
     function updateCategory( $id, $title ) {
         global $logged_in;
         global $connection;
@@ -692,7 +762,7 @@
         header("location: admin_categories.php?{$logged_in}");
     }
   
-  // III.H - DELETE CATEGORY:
+  // III.I - DELETE CATEGORY:
     function deleteCategory( $id ) {
         global $logged_in;
         global $connection;
@@ -948,7 +1018,7 @@
             $table_row .= "<td>{$comment_status}</td>";
             $table_row .= "<td><a href='admin_comments.php?approve={$comment_id}{$logged_in_com}'>Approve</a></td>";
             $table_row .= "<td><a href='admin_comments.php?deny={$comment_id}{$logged_in_com}'>Deny</a></td>";
-            $table_row .= "<td><a href='admin_comments.php?delete={$comment_id}&post_id={$comment_post_id}{$logged_in_com}'>Delete</a></td>";
+            $table_row .= "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete'); \" href='admin_comments.php?delete={$comment_id}&post_id={$comment_post_id}{$logged_in_com}'>Delete</a></td>";
             $table_row .= "</tr>";
         
             echo $table_row;
@@ -1007,7 +1077,7 @@
         header("location: admin_comments.php?{$logged_in}");
     }
 
-  // IV.N DELETE COMMENTS
+  // IV.N - DELETE COMMENTS
     function deleteComments( $post_id ) {
         global $logged_in;
         global $connection;
@@ -1025,13 +1095,13 @@
 // ====================================================================
 
   // V.A - CREATE USER:
-    function createUser( $username, $password, $fname, $lname, $email, $image='', $role='', $randSalt='' ) {
+    function createUser( $username, $password, $fname, $lname, $email, $image='', $role='' ) {
         global $connection; 
         
-        $query_users  = "INSERT INTO users(username, user_password, user_firstname, user_lastname, user_email, user_image, user_role, randSalt) ";
-        $query_users .= "VALUES ('{$username}','{$password}','{$fname}','{$lname}','{$email}','{$image}','{$role}','{$randSalt}') ";
+        $query  = "INSERT INTO users(username, user_password, user_firstname, user_lastname, user_email, user_image, user_role) ";
+        $query .= "VALUES ('{$username}','{$password}','{$fname}','{$lname}','{$email}','{$image}','{$role}') ";
         
-        $result = mysqli_query($connection, $query_users);
+        $result = mysqli_query($connection, $query);
     
         confirmQuery( $result );
 
@@ -1040,7 +1110,23 @@
         return $user_id; 
     }
 
-  // V.B - GET USER:
+  // V.B - REGISTER USER:
+    function registerUser( $username, $email, $password ){
+        global $connection;
+
+        $query  = "INSERT INTO users(username, user_password, user_email) ";
+        $query .= "VALUES ('{$username}','{$password}','{$email}') ";
+
+        $result = mysqli_query($connection, $query);
+
+        confirmQuery( $result );
+
+        $user_id = mysqli_insert_id($connection);
+
+        return $user_id; 
+    }  
+
+  // V.C - GET USER:
     function getUser( $id ) {
         global $connection;
         
@@ -1063,7 +1149,7 @@
         } 
     }
 
-  // V.C - GET USERS:
+  // V.D - GET USERS:
     function getUsers() {
         global $connection;
 
@@ -1147,7 +1233,6 @@
   // V.I - (READ) DISPLAY USERS TABLE DATA ( ADMIN ):
     function displayUsersTable( $users ) { 
         global $logged_in; 
-        $logged_in_user = null;
 
         while ( $row = mysqli_fetch_assoc( $users ) ) {
             $user_id  = $row['user_id'];
@@ -1167,8 +1252,8 @@
             $table_row .= "<td>{$lname}</td>";
             $table_row .= "<td>{$email}</td>";
             $table_row .= "<td>{$role}</td>";
-            $table_row .= "<td><a href='admin_users.php?source=edit_user{$logged_in_user}'>Edit</a></td>";
-            $table_row .= "<td><a href='admin_users.php?delete={$user_id}'>Delete</a></td>";
+            $table_row .= "<td><a href='admin_users.php?source=edit_user&user_id={$user_id}&{$logged_in}'>Edit</a></td>";
+            $table_row .= "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete'); \" href='admin_users.php?delete={$user_id}'>Delete</a></td>";
             $table_row .= "</tr>";
         
             echo $table_row; 
@@ -1352,4 +1437,5 @@
       // REFRESHES THE PAGE
         header("location: admin_profile.php?{$logged_in}");
     }
+
 ?>                                      

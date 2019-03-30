@@ -63,26 +63,23 @@ $(document).ready(function(){
   // SELECT ALL CHECKBOXES FUNCTIONALITY
     // ADDS CLICK LISTENER TO CHECKBOX
     $('#selectAllBoxes').click(function(e){
-
         // IF CHECKED WILL MAKE ALL .CHECKBOXES CHECKED
         if(this.checked) {
-
           $('.checkBoxes').each(function(){
-
              this.checked = true;
-
           });
 
         // IF UN-CHECKED WILL MAKE ALL .CHECKBOXES UN-CHECKED
         } else {
-
           $('.checkBoxes').each(function(){
-
              this.checked = false;
-
           });
-
         }
     })   
+
+  // LOADING SCREEN FUNCITONALITY  
+    $('#load-screen').delay(250).fadeOut(600, function(){
+      $(this).remove();
+    });
 
 });

@@ -17,6 +17,7 @@
                 <?php
                     if( isset( $_GET[ 'post_id' ] ) ) {
                         $post_id = $_GET[ 'post_id' ];
+                        incrementViewsCount( $post_id );
                         $post = getPost( $post_id );
                     }  
                 ?>
