@@ -13,8 +13,10 @@
 
 <!-- Top Menu Items -->
     <ul class="nav navbar-right top-nav">
+        <li><a href="admin_users.php?<?php echo $logged_in; ?>">Users Online: <?php echo $users_online_count; ?></a></li>
         <li><a href="../index.php?<?php echo $logged_in; ?>">Home</a></li>
         <li class="dropdown">
+
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $_SESSION['username']; ?> <b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li>

@@ -6,13 +6,16 @@
   // with scripts it will send everything at one time rather than one at a time  
     ob_start();
     session_start();
-
     $logged_in = null;
+    $user_id = null;
 
   // CHECKS IF SESSION_ID HAS BEEN SET (SHOULD BE SET to GET HERE);
     if( isset( $_SESSION['id'] ) ) {
         $logged_in = "user={$_SESSION['id']}";
+        $user_id = $_SESSION['id'];
     }
+
+    $users_online_count = compileUsersOnline($user_id);
 
   // CHECKS IF SESSION_ROLE HAS BEEN SET (SHOULD BE SET and SHOULD BE ADMIN to GET HERE);
   // SHOULD BUILD AN IF STATMENT ON FRONT END SO ADMIN ONLY SHOWS IF LOGGED AND ROLE IS ADMIN 

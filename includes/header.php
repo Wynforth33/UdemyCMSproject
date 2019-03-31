@@ -1,17 +1,21 @@
 <?php
-// In Charge of Buffering Requests in the headers of scripts so that when done 
-// with scripts it will send everything at one time rather than one at a time  
-ob_start();
-session_start(); 
+    include "constants.php"; 
+    include "functions.php";
 
-include "constants.php"; 
-include "functions.php";
+  // In Charge of Buffering Requests in the headers of scripts so that when done 
+  // with scripts it will send everything at one time rather than one at a time  
+    ob_start();
+    session_start(); 
+    $logged_in = null;
+    $user_id = null;
 
-$logged_in = null;
-
-if (isset($_GET['user'])){
-    $logged_in = "user={$_GET['user']}";
-}
+  // CHECKS IF SESSION_ID HAS BEEN SET (SHOULD BE SET to GET HERE);
+    if( isset( $_GET['user'] ) ) {
+        $logged_in = "user={$_GET['user']}";
+        $user_id = $_GET['user'];
+    }
+    
+    $users_online_count = compileUsersOnline($user_id);
 ?>
 
 

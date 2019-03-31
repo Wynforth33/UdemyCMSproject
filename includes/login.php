@@ -37,12 +37,16 @@ if( isset($_POST[ 'login' ]) ) {
 
         switch($user_data['user_role']){
             case 'admin';
-            header("Location: ../admin?user={$user_data['user_id']}");
+            header("Location: ../admin/index.php?user={$user_data['user_id']}");
             break;
 
             case 'subscriber'; 
             header("Location: ../index.php?user={$user_data['user_id']}");
             break;  
+
+            case 'test user';
+            header("Location: ../index.php?user={$user_data['user_id']}");
+            break; 
         }
     }
 }   

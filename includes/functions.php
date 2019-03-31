@@ -1140,12 +1140,11 @@
         // Converts $result into an Array and grabs Category Title 
         $user = mysqli_fetch_assoc( $result );
         
-        // Checks if Category Title exists; if not throws error;
-        // else returns Category Title
-        if ( isset( $user ) ) {
+        // Checks if Category Title exists; if not returns falsey
+        if ( $user ) {
             return $user;
         } else {
-            echo "No User Returned!";
+            return 0;
         } 
     }
 
@@ -1222,10 +1221,8 @@
         $result = mysqli_query( $connection, $query );
 
         if(!$result){
-            echo "Doesn't Exist!";
             return 0;
         } else {
-            echo "Does Exist!";
             return 1; 
         }
     }
@@ -1358,7 +1355,7 @@
         $_SESSION[ 'fname' ]    = $user_data['user_firstname'];
         $_SESSION[ 'lname' ]    = $user_data['user_lastname'];
         $_SESSION[ 'role' ]     = $user_data['user_role'];
-    }   
+    } 
 
 // ====================================================================
 // VII.  PROFILE FUNCTIONS
@@ -1438,4 +1435,129 @@
         header("location: admin_profile.php?{$logged_in}");
     }
 
+// ====================================================================
+// VIII.  USERS ONLINE FUNCTIONS
+// ====================================================================
+
+  // VIII.A - ADD USER ONLINE
+    function addUserOnline( $user_id, $session, $time ){
+        global $connection;
+
+        $user_data = getUser($user_id);
+        $user_role = $user_data['user_role'];
+
+        $query = "INSERT INTO users_online(session, time, online_user_id, online_user_role) VALUES('$session','$time', '$user_id', '$user_role')";
+    
+        $result = mysqli_query( $connection, $query );
+
+        confirmQuery( $result );
+
+        $online_id = mysqli_insert_id($connection);
+
+        return $online_id; 
+    }
+
+  // VIII.A - GET USERS ONLINE
+    function getUsersOnlineCount($time_out){
+        global $connection;
+
+        $query = "SELECT * FROM users_online WHERE time > $time_out";
+    
+        $result = mysqli_query( $connection, $query );
+
+        confirmQuery( $result );
+
+        $count = mysqli_num_rows($result);
+
+        return $count; 
+    } 
+
+    // VIII.A - GET USERS ONLINE
+    function getUsersOnlineCount($time_out){
+        global $connection;
+
+        $query = "SELECT * FROM users_online WHERE time > $time_out";
+    
+        $result = mysqli_query( $connection, $query );
+
+        confirmQuery( $result );
+
+        $count = mysqli_num_rows($result);
+
+        return $count; 
+    }
+
+  // VIII.B - GET USERS ONLINE COUNT BY SESSION ID
+    function getUsersOnlineBySession( $session ){
+        global $connection;
+
+        $query = "SELECT * FROM users_online WHERE session = '$session' ";
+    
+        $result = mysqli_query( $connection, $query );
+
+        confirmQuery( $result );
+
+        $count = mysqli_num_rows($result);
+
+        return $count; 
+    }
+
+  // VIII.C  GET SESSION BY USER_ID 
+    function getSessionByUserId($user_id){
+        global $connection;
+
+        $query = "SELECT * FROM users_online WHERE online_user_id = {$user_id} ";
+
+        $result = mysqli_query( $connection, $query );
+
+        confirmQuery( $result );
+
+          // Converts $result into an Array 
+        $session = mysqli_fetch_assoc( $result );
+        
+        // Checks if Sessione exists; if not returns falsey
+        if ( $session ) {
+            return $session;
+        } else {
+            return 0;
+        } 
+    }    
+
+    // VIII.B - UPDATE ONLINE USER BY SESSION ID
+    function updateOnlineUserBySession( $session, $time ){
+        global $connection;
+
+        $query = "UPDATE users_online SET time = '$time' WHERE session = '$session'";
+    
+        $result = mysqli_query( $connection, $query );
+
+        confirmQuery( $result );
+
+    }
+
+    // VIII.E - COMPILE USERS ONLINE: TAKES $USER_ID OF CURRENT USER TO CHECK IF NEW SESSION OR EXISTING SESSION 
+    function compileUsersOnline($user_id){
+        $session = session_id();
+        $time = time();
+        $time_out_in_seconds = 60;
+        $time_out = $time - $time_out_in_seconds;
+        $session_data = null;
+
+        if($user_id) {
+            $session_data = getSessionByUserId($user_id);
+        }
+
+        if (!$session_data && $user_id ) {
+            
+            addUserOnline( $user_id, $session, $time );
+
+        } else {
+
+            updateOnlineUserBySession( $session, $time );
+        }
+
+        $users_online_count = getUsersOnlineCount($time_out);
+
+        return $users_online_count;
+    }
 ?>                                      
