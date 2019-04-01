@@ -1,6 +1,6 @@
 <?php 
     include "includes/admin_header.php";
-    $users = getOnlineUsers();
+    $users = getUsers();
     $source = null;
 
  // HANDLERS
@@ -26,10 +26,6 @@
 
             case 'edit_user';
             include "includes/edit_user.php";
-            break;
-
-            case 'online_users';
-            include "includes/online_users_table.php";
             break;
 
             default: 

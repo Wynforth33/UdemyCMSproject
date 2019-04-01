@@ -5,6 +5,7 @@
     include "includes/header.php";
     $message = "";
     $isMessage = false;
+    
 
     if( isset( $_POST['submit'] ) ) {
         $username      = $_POST['username'];
@@ -20,7 +21,7 @@
             $user_password = cleanString( $user_password );
 
             // ENCRYPT PASSWORD
-            $crypted_password = encryptPassword( $user_password, COST_PARAM, SALT1 );
+            $crypted_password = password_hash( $user_password, PASSWORD_BCRYPT, array('cost' => 10) );
 
             // REGISTER NEW USER
             $user_id = registerUser($username, $user_email, $crypted_password);

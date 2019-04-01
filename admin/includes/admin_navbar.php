@@ -13,7 +13,16 @@
 
 <!-- Top Menu Items -->
     <ul class="nav navbar-right top-nav">
-        <li><a href="admin_users.php?<?php echo $logged_in; ?>">Users Online: <?php echo $users_online_count; ?></a></li>
+
+        <script type="text/javascript">
+        
+            setInterval( function(){
+                loadUsersOnline();
+            }, 2000);
+
+        </script>
+        
+        <li><a href="admin_users.php?<?php echo $logged_in; ?>">Users Online: <span class="usersonline"></span></a></li>
         <li><a href="../index.php?<?php echo $logged_in; ?>">Home</a></li>
         <li class="dropdown">
 

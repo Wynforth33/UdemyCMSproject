@@ -6,22 +6,35 @@
   // with scripts it will send everything at one time rather than one at a time  
     ob_start();
     session_start();
+    $time = time();
+    $session = session_id(); 
     $logged_in = null;
     $user_id = null;
+    $user_name = '';
+    $user_role = '';
+
 
   // CHECKS IF SESSION_ID HAS BEEN SET (SHOULD BE SET to GET HERE);
-    if( isset( $_SESSION['id'] ) ) {
-        $logged_in = "user={$_SESSION['id']}";
-        $user_id = $_SESSION['id'];
+    if( isset( $_SESSION[ 'id' ] ) ) {
+        $logged_in = "user={$_SESSION[ 'id' ]}";
+        $user_id = $_SESSION[ 'id' ];
+        $user_name = $_SESSION[ 'username' ];
+        $user_role = $_SESSION[ 'role' ];
     }
+    
+    $exists = checkBySession( $session );
 
-    $users_online_count = compileUsersOnline($user_id);
+    if(!$exists){
+        loginOnlineSession( $session, $time, $user_id, $user_role );
+    } else {
+        updateOnlineUser( $session, $time, $user_id, $user_role );
+    }
 
   // CHECKS IF SESSION_ROLE HAS BEEN SET (SHOULD BE SET and SHOULD BE ADMIN to GET HERE);
   // SHOULD BUILD AN IF STATMENT ON FRONT END SO ADMIN ONLY SHOWS IF LOGGED AND ROLE IS ADMIN 
-    if( !isset( $_SESSION['role'] ) ) {
+    if( !$user_role ) {
         header("Location: ../index.php");
-    } else if ( isset( $_SESSION['role'] ) && $_SESSION['role'] !== 'admin' ) {
+    } else if ( $user_role && $user_role !== 'admin' ) {
         header("Location: ../index.php?{$logged_in}");
     }
 ?>

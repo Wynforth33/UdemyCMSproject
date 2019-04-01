@@ -2,8 +2,8 @@
         <?php if ( isset($_GET['user'] ) ) : ?>
 
             <div class="container">
-                <h4>Welcome - <?php echo $_SESSION['username']; ?></h4>
-                <h5>Role: <?php echo $_SESSION['role']; ?></h5>
+                <h4>Welcome - <?php echo $user_name ?></h4>
+                <h5>Role: <?php echo $user_role ?></h5>
                 <form action="includes/logout.php" method="post">
                     <div class="input-group">               
                         <span class="input-group-btn">

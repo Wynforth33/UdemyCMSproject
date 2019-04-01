@@ -8,18 +8,13 @@
 
     <!-- Page Content -->
     <div class="container">
-       
-        <?php 
-            $posts = getPosts( HOME_POST_ORDERBY, HOME_POST_ORDER, HOME_POST_LIMIT );
-            $post_count = getPostsCount();
-            $page = 1;
-        ?>
-
         <div class="row">
 
             <!-- Blog Entries Column -->
             <div class="col-md-8">
                 <?php
+                    $posts = getPosts( HOME_POST_ORDERBY, HOME_POST_ORDER, HOME_POST_LIMIT );
+
                     if ( isset( $_GET['page'] ) ) {
                         $page = $_GET['page'];
                         $posts = getPostsByPage( $page );
@@ -38,7 +33,12 @@
         </div><!-- .row -->
 
         <hr>
+        
+        <?php 
+            $post_count = getPostsCount();
+            $page = 1;
 
-        <?php include "includes/widgets/pager.php" ?>
+            include "includes/widgets/pager.php"; 
+        ?>
      
 <?php include "includes/footer.php" ?>

@@ -19,5 +19,6 @@
 
     <!-- GENERAL APPLICATION SCRIPTS -->
     <script src="js/scripts.js"></script>
+    
   </body>
 </html>

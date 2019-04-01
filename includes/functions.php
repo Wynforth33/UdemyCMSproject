@@ -5,12 +5,12 @@
 ///////////////////////////////////////////////////////////////////////
 // INDEX
 // 
-// I.   UTILITY FUNCTIONS:
+// I.     UTILITY FUNCTIONS:
 //   I.A   - CONFIRM QUERY
 //   I.B   - CLEAN VALUE
 //   I.C   - ENCRYPT PASSWORD:
 //
-// II.   POST FUNCTIONS:
+// II.    POST FUNCTIONS:
 //   II.A  - CREATE POST
 //   II.B  - GET POST
 //   II.C  - GET POSTS  
@@ -32,7 +32,7 @@
 //   II.S  - (UPDATE) INCREMENT POST'S VIEWS COUNTER:    
 //   II.T  - DELETE POST 
 //
-// III.  CATEGORY FUNCTIONS:
+// III.   CATEGORY FUNCTIONS:
 //   III.A - CREATE CATEGORY
 //   III.B - GET CATEGORY
 //   III.C - GET CATEGORIES
@@ -43,7 +43,7 @@
 //   III.H - UPDATE CATEGORY
 //   III.I - DELETE CATEGORY
 //
-// IV.   COMMENT FUNCTIONS:
+// IV.    COMMENT FUNCTIONS:
 //   IV.A  - CREATE COMMENT
 //   IV.B  - GET COMMENT
 //   IV.C  - GET COMMENTS
@@ -59,7 +59,7 @@
 //   IV.M  - DELETE COMMENT (ADMIN)
 //   IV.N  - DELETE COMMENTS
 //
-//  V.   USER FUNCTIONS:
+//  V.    USER FUNCTIONS:
 //   V.A   - CREATE USER
 //   V.B   - REGISTER USER:
 //   V.c   - GET USER
@@ -72,15 +72,22 @@
 //   V.J   - UPDATE USER
 //   V.K   - DELETE USER 
 //
-//  VI.  LOGIN FUNCTIONS:
+//  VI.   LOGIN FUNCTIONS:
 //   VI.A  - CLEAN LOGIN VALUES
 //   VI.B  - GET USER_DATA ARRAY
 //   VI.C  - SESSIONIZE USER DATA   
 //
-//  VII. PROFILE FUNCTIONS:
+//  VII.  PROFILE FUNCTIONS:
 //   VII.A - CREATE PROFILE
 //   VII.B - GET PROFILE
 //   VII.C - UPDATE PROFILE 
+//
+//  VIII. USERS ONLINE FUNCTIONS
+//   VIII.A - LOGIN ONLINE SESSION
+//   VIII.B - GET USERS ONLINE COUNT 
+//   VIII.C - CHECK BY SESSION 
+//   VIII.D - UPDATE ONLINE USER
+//   VIII.E - USERS ONLINE 
 //
 ///////////////////////////////////////////////////////////////////////
 
@@ -1352,8 +1359,6 @@
     function sessionizeUserData($user_data) {
         $_SESSION[ 'id' ]       = $user_data['user_id'];
         $_SESSION[ 'username' ] = $user_data['username'];
-        $_SESSION[ 'fname' ]    = $user_data['user_firstname'];
-        $_SESSION[ 'lname' ]    = $user_data['user_lastname'];
         $_SESSION[ 'role' ]     = $user_data['user_role'];
     } 
 
@@ -1439,29 +1444,27 @@
 // VIII.  USERS ONLINE FUNCTIONS
 // ====================================================================
 
-  // VIII.A - ADD USER ONLINE
-    function addUserOnline( $user_id, $session, $time ){
-        global $connection;
+ // VIII.A - LOGIN ONLINE SESSION
+    function loginOnlineSession($session, $time, $id, $role) {
+        global $connection; 
+        
+        $query  = "INSERT INTO users_online(session, time, online_user_id, online_user_role) ";
+        $query .= "VALUES('$session','$time','$user_id','$user_role') ";
 
-        $user_data = getUser($user_id);
-        $user_role = $user_data['user_role'];
-
-        $query = "INSERT INTO users_online(session, time, online_user_id, online_user_role) VALUES('$session','$time', '$user_id', '$user_role')";
-    
         $result = mysqli_query( $connection, $query );
 
         confirmQuery( $result );
 
         $online_id = mysqli_insert_id($connection);
 
-        return $online_id; 
+        return $online_id;
     }
 
-  // VIII.A - GET USERS ONLINE
+ // VIII.B - GET USERS ONLINE COUNT
     function getUsersOnlineCount($time_out){
         global $connection;
 
-        $query = "SELECT * FROM users_online WHERE time > $time_out";
+        $query = "SELECT * FROM users_online WHERE time > '$time_out'";
     
         $result = mysqli_query( $connection, $query );
 
@@ -1472,23 +1475,8 @@
         return $count; 
     } 
 
-    // VIII.A - GET USERS ONLINE
-    function getUsersOnlineCount($time_out){
-        global $connection;
-
-        $query = "SELECT * FROM users_online WHERE time > $time_out";
-    
-        $result = mysqli_query( $connection, $query );
-
-        confirmQuery( $result );
-
-        $count = mysqli_num_rows($result);
-
-        return $count; 
-    }
-
-  // VIII.B - GET USERS ONLINE COUNT BY SESSION ID
-    function getUsersOnlineBySession( $session ){
+ // VIII.C - CHECK BY SESSION
+    function checkBySession( $session ){
         global $connection;
 
         $query = "SELECT * FROM users_online WHERE session = '$session' ";
@@ -1497,67 +1485,38 @@
 
         confirmQuery( $result );
 
-        $count = mysqli_num_rows($result);
-
-        return $count; 
-    }
-
-  // VIII.C  GET SESSION BY USER_ID 
-    function getSessionByUserId($user_id){
-        global $connection;
-
-        $query = "SELECT * FROM users_online WHERE online_user_id = {$user_id} ";
-
-        $result = mysqli_query( $connection, $query );
-
-        confirmQuery( $result );
-
-          // Converts $result into an Array 
-        $session = mysqli_fetch_assoc( $result );
-        
-        // Checks if Sessione exists; if not returns falsey
-        if ( $session ) {
-            return $session;
+        if($result){
+            return 1;
         } else {
             return 0;
-        } 
-    }    
-
-    // VIII.B - UPDATE ONLINE USER BY SESSION ID
-    function updateOnlineUserBySession( $session, $time ){
+        }
+    }
+   
+ // VIII.D - UPDATE ONLINE USER
+    function updateOnlineUser( $session, $time, $id, $role ){
         global $connection;
 
-        $query = "UPDATE users_online SET time = '$time' WHERE session = '$session'";
+        $query = "UPDATE users_online SET time = '$time', online_user_id = '$id', online_user_role = '$role' WHERE session = '$session'";
     
         $result = mysqli_query( $connection, $query );
 
         confirmQuery( $result );
-
     }
 
-    // VIII.E - COMPILE USERS ONLINE: TAKES $USER_ID OF CURRENT USER TO CHECK IF NEW SESSION OR EXISTING SESSION 
-    function compileUsersOnline($user_id){
-        $session = session_id();
-        $time = time();
-        $time_out_in_seconds = 60;
-        $time_out = $time - $time_out_in_seconds;
-        $session_data = null;
+ // VIII.E - USERS ONLINE 
+    function usersOnline() {
+        if ( isset( $_GET['onlineusers'] ) ) {
+            $time = time();
+            $time_out_in_seconds = 60;
+            $time_out = $time - $time_out_in_seconds;
 
-        if($user_id) {
-            $session_data = getSessionByUserId($user_id);
-        }
+            $users_count = getUsersOnlineCount($time_out);
 
-        if (!$session_data && $user_id ) {
-            
-            addUserOnline( $user_id, $session, $time );
-
-        } else {
-
-            updateOnlineUserBySession( $session, $time );
-        }
-
-        $users_online_count = getUsersOnlineCount($time_out);
-
-        return $users_online_count;
+            echo $users_count;
+        } 
     }
+
+     // Auto Execute
+        usersOnline();
+    
 ?>                                      
