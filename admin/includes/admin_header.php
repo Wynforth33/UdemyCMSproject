@@ -1,6 +1,7 @@
 <?php 
     include "../includes/constants.php"; 
-    include "../includes/functions.php"; 
+    include "../includes/functions.php";
+    include "../includes/ChromePHP.php"; 
 
   // In Charge of Buffering Requests in the headers of scripts so that when done 
   // with scripts it will send everything at one time rather than one at a time  

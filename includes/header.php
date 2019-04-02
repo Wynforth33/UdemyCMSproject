@@ -1,6 +1,7 @@
 <?php
     include "constants.php"; 
     include "functions.php";
+    include "ChromePHP.php";
 
   // In Charge of Buffering Requests in the headers of scripts so that when done 
   // with scripts it will send everything at one time rather than one at a time  
@@ -8,12 +9,12 @@
     session_start();
     $time = time();
     $session = session_id(); 
-    $logged_in = null;
-    $user_id = null;
-    $user_name = '';
-    $user_role = '';
+    $logged_in = null; 
+    $user_id   = null; 
+    $user_name = null; 
+    $user_role = null;
 
-  // CHECKS IF SESSION_ID HAS BEEN SET (SHOULD BE SET to GET HERE);
+  // CHECKS IF USER ID HAS BEEN SESSIONIZED (SHOULD BE SET to GET HERE);
     if( isset( $_SESSION[ 'id' ] ) ) {
         $logged_in = "user={$_SESSION[ 'id' ]}";
         $user_id = $_SESSION[ 'id' ];
@@ -21,8 +22,10 @@
         $user_role = $_SESSION[ 'role' ];
     }
 
+  //  CHECKS TO SEE IF CURRENT SESSION HAS ALREADY BEEN SAVED
     $exists = checkBySession( $session );
 
+    // IF DOESN'T EXIST CREATES NEW SESSION DATA IN DB; ELSE UPDATES SESSION DATA ALREADY IN DB
     if(!$exists){
         loginOnlineSession( $session, $time, $user_id, $user_role );
     } else {
@@ -32,7 +35,6 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
     <meta charset="utf-8">
@@ -43,6 +45,8 @@
 
     <title><?php echo TITLE ?></title>
 
+<!--LINKS
+========================================================================================   -->
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
