@@ -13,8 +13,18 @@
 <!-- CONTENT 
 ======================================================================-->
 <h2>Edit User</h2>
+
+<?php if( isset( $_POST['update_user'] ) && !$isMessage ) : ?> 
+        
+        <h6 class="bg-success">Update Successful! <a href='admin_users.php'>View Users</a></h6>
+
+<?php elseif ( $isMessage ) : ?>
+        
+        <h6 class="bg-danger"><?php echo $message ?></h6>
+
+<?php endif; ?>
   
-<form action="admin_users.php" method="Post" enctype="multipart/form-data">
+<form action="" method="Post" enctype="multipart/form-data">
     
     <div class="form-group">
         <label for="user_fname">First Name</label>

@@ -1179,10 +1179,10 @@
         }
         
         $query  = "SELECT * FROM users ";
-        $query .= "WHERE username = '{$username}' "; 
+        $query .= "WHERE username = '$username' "; 
 
         $result = mysqli_query( $connection, $query );
-        
+
         confirmQuery( $result );
 
         return $result; 
@@ -1222,12 +1222,18 @@
     function searchForUserByUsername( $username ) {
         global $connection;
 
-        $query  = "SELECT * FROM users ";
-        $query .= "WHERE username LIKE '$username' ";
+        $query  = "SELECT * FROM `users` WHERE `username` LIKE '$username'";
 
+      // WILL CHECK TO SEE IF ANYTHING EXISTS - WILL SEND A RESULT EVEN IF 0 ROWS ARE SENT; FALSE IF FAILS
         $result = mysqli_query( $connection, $query );
 
-        if(!$result){
+      // IF RESULT IF 'FALSE' WILL GIVE US AN ERROR MESSAGE
+        confirmQuery( $result );
+
+      // CHECKS TO SEE IF A SUCCESSFUL QUERY YIELDED AND ROWS
+        $count = mysqli_num_rows($result);
+
+        if(!$count){
             return 0;
         } else {
             return 1; 
@@ -1296,9 +1302,12 @@
         $result = mysqli_query($connection, $query);
 
         confirmQuery( $result );
-    
-      // REFRESHES THE PAGE
-        header("location: admin_users.php?{$logged_in}");
+
+        if(!$result) {
+            return false; 
+        } else {
+            return 1; 
+        }
     }  
 
   // V.K - DELETE USER:

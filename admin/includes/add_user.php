@@ -1,11 +1,14 @@
 <h2>Create User</h2>
 
-<?php 
-//  USER CREATED NOTIFICATION (This handler required here for placement of notification and link)
-    if( isset( $_POST[ 'create_user' ] ) ) { 
-        echo "User Created: <a href='admin_users.php'>View Users</a>";
-    }  
-?>
+<?php if( isset( $_POST['create_user'] ) && !$isMessage ) : ?> 
+        
+        <h6 class="bg-success">User Created: <a href='admin_users.php'>View Users</a></h6>
+
+<?php elseif ( $isMessage ) : ?>
+        
+        <h6 class="bg-danger"><?php echo $message ?></h6>
+
+<?php endif; ?>
 
 <form action="" method="Post" enctype="multipart/form-data">
 

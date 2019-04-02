@@ -1,8 +1,11 @@
 <?php 
     $images_dir = "../images";
+    $isMessage = false;
+    $message = null;
 
     // 'CREATE USER'
     if( isset( $_POST[ 'create_user' ] ) ) { 
+        // GATHER ALL FORM VALUES, CLEAN THEM FOR DATABASE INSERTION, and SAVE THEM TO VARIABLES
         $username          = cleanString($_POST[ 'username' ]);
         $user_password     = cleanString($_POST[ 'user_password' ]);
         $user_fname        = cleanString($_POST[ 'user_fname' ]);
@@ -25,14 +28,41 @@
             die;
         }
 
-        $crypted_password = encryptPassword($user_password, HASH, SALT1);
+        // CHECK IF USERNAME ALREADY EXISTS IF IT DOESN'T CONTINUE USER CREATION; ELSE THROW ERROR
+        if(!searchForUserByUsername( $username )) {
+
+            // ENCYRPT PASSWORD FOR STORAGE
+            $user_password = password_hash( $user_password, PASSWORD_BCRYPT, array('cost' => 12) );
+
+            // CHECK FOR ERROR CODES ON IMAGE UPLOAD
+            if ( $user_image_error && $user_image_error === 1 ) {
+                echo "Image file size too Big!";
+                die;
+            } elseif ( $user_image_error && !$user_image_error === 1 ) {
+                echo "Error Code Thrown: Value = {$user_image_error}; check http://php.net/manual/en/features.file-upload.errors.php ";
+                die;
+            }
         
-        // FUNCTION MOVES IMAGE FROM TEMPORARY LOCATION INTO GIVEN FOLDER WITH GIVEN NAME
-        move_uploaded_file( $user_image_temp, "$images_dir/$user_image" ); 
+            // FUNCTION MOVES IMAGE FROM TEMPORARY LOCATION INTO GIVEN FOLDER WITH GIVEN NAME
+            move_uploaded_file( $user_image_temp, "$images_dir/$user_image" ); 
 
-        $user_id = createUser( $username, $crypted_password, $user_fname, $user_lname, $user_email, $user_image, $user_role );
+            // CREATE USER CAPTURE ID
+            $created_user_id = createUser( $username, $user_password, $user_fname, $user_lname, $user_email, $user_image, $user_role );
 
-        createProfile( $user_id, $user_about_me, $user_my_education, $user_my_work );
+            // IF USER CREATION FAILS WILL THROW ERROR
+            if ( $created_user_id ) {
+                $isMessage = true;
+                $message   = "Database Creation Process Failed!";
+            }
+
+            // IF USER CREATION IS SUCCESS USE CREATED USER ID TO STORE PROFILE DATA IN PROFILES
+            createProfile( $created_user_id, $user_about_me, $user_my_education, $user_my_work );
+
+        } else {
+
+            $isMessage = true;
+            $message   = "Username Already Exists!";
+        }
     }
 
     // (READ) 'GET USER' 
@@ -55,6 +85,9 @@
         $user_email       = $_POST[ 'user_email' ];
         $user_role        = $_POST[ 'user_role' ];
 
+        // ENCYRPT PASSWORD FOR STORAGE
+        $user_password = password_hash( $user_password, PASSWORD_BCRYPT, array('cost' => 12) );
+
         // CHECK FOR ERROR CODES ON IMAGE UPLOAD
         if ( $user_image_error && $user_image_error === 1 ) {
             echo "Image file size too Big!";
@@ -69,9 +102,11 @@
           move_uploaded_file( $user_image_temp, "$images_dir/$user_image" ); 
         }
 
-        $crypted_password = encryptPassword($user_password, HASH, SALT1);
-
-        updateUser( $user_id, $username, $crypted_password, $user_fname, $user_lname, $user_email, $user_image, $user_role );
+        // UPDATE USER; IF PROCESS FAILS WILL THROW ERROR
+        if( !updateUser( $user_id, $username, $user_password, $user_fname, $user_lname, $user_email, $user_image, $user_role ) ) {
+            $isMessage = true;
+            $message   = "Database Update Process Failed!";
+        }
     }
 
     // 'DELETE USER' 

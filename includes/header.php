@@ -1,7 +1,8 @@
 <?php
+    include "ChromePHP.php";
     include "constants.php"; 
     include "functions.php";
-    include "ChromePHP.php";
+    
 
   // In Charge of Buffering Requests in the headers of scripts so that when done 
   // with scripts it will send everything at one time rather than one at a time  
@@ -15,11 +16,12 @@
     $user_role = null;
 
   // CHECKS IF USER ID HAS BEEN SESSIONIZED (SHOULD BE SET to GET HERE);
-    if( isset( $_SESSION[ 'id' ] ) ) {
-        $logged_in = "user={$_SESSION[ 'id' ]}";
-        $user_id = $_SESSION[ 'id' ];
-        $user_name = $_SESSION[ 'username' ];
-        $user_role = $_SESSION[ 'role' ];
+    if( isset( $_GET[ 'user' ] ) ) {
+        $logged_in = "user={$_GET[ 'user' ]}";
+        $user_id = $_GET[ 'user' ];
+        $user_data = getUser($user_id);
+        $user_name = $user_data[ 'username' ];
+        $user_role = $user_data[ 'user_role' ];
     }
 
   //  CHECKS TO SEE IF CURRENT SESSION HAS ALREADY BEEN SAVED
@@ -68,3 +70,6 @@
 </head>
 
 <body>
+    <div id='load-screen'>
+        <div id='loading'></div>
+    </div>

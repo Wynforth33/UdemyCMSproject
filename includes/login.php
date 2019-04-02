@@ -18,6 +18,8 @@ if( isset($_POST[ 'login' ]) ) {
     // CLEAN UP VALUES FOR SAFE USE WITH DATABASE
     $safe_user_values = cleanLoginValues( $username, $password );
 
+    $password = password_hash( $safe_user_values['password'], PASSWORD_BCRYPT, array('cost' => 12) ); 
+
     // CHECKS IF USER EXISTS; IF EXISTS WILL RETURN $USER DATA AS AN ARRAY, IF DOESN'T EXIST WILL RETURN 0 (FALSE)
     $user_data = getUserDataArray( $safe_user_values['username'] );
 
@@ -26,7 +28,7 @@ if( isset($_POST[ 'login' ]) ) {
         header("Location: ../index.php?fail=1");
 
     // IF USER PASSWORD IS INCORRECT, REDIRECT BACK TO INDEX (Failure Trigger - PASSWORD INCORRECT)   
-    } elseif ( password_verify( $safe_user_values['password'], $user_data['password'] ) ) {
+    } elseif ( password_verify( $password, $user_data['password'] ) ) {
         header("Location: ../index.php?fail=2");
 
     // ELSE SESSIONIZE USER DATA AND REDIRECT BASED ON USER_ROLE    

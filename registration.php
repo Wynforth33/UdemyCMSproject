@@ -5,11 +5,12 @@
     include "includes/header.php";
     $message = "";
     $isMessage = false;
+    $register_id = null;
     
 
     if( isset( $_POST['submit'] ) ) {
         $username      = $_POST['username'];
-        $user_email    = $_POST['username'];
+        $user_email    = $_POST['email'];
         $user_password = $_POST['password'];
 
         // CHECK TO MAKE SURE THERE ARE NO EMPTY FIELDS
@@ -20,11 +21,23 @@
             $user_email    = cleanString( $user_email );
             $user_password = cleanString( $user_password );
 
-            // ENCRYPT PASSWORD
-            $crypted_password = password_hash( $user_password, PASSWORD_BCRYPT, array('cost' => 10) );
+            $exists = getUserByUsername( $username );
 
-            // REGISTER NEW USER
-            $user_id = registerUser($username, $user_email, $crypted_password);
+            if($exists){
+                $isMessage = true;
+                $message = "Username Already Exists!";
+            } else {
+                // ENCRYPT PASSWORD
+                $user_password = password_hash( $user_password, PASSWORD_BCRYPT, array('cost' => 12) );
+
+                // REGISTER NEW USER
+                $register_id = registerUser($username, $user_email, $user_password);
+
+                if(!$register_id){
+                    $isMessage = true;
+                    $message = "Database Registration Process failed!";
+                }
+            }
 
         // IF EMPTY FIELDS GIVE WARNING
         } else {
@@ -45,6 +58,12 @@
             <div class="col-xs-6 col-xs-offset-3">
                 <div class="form-wrap">
                     <h1>Register</h1>
+
+                    <?php if( isset( $_POST['submit'] ) && $register_id  ) : ?>
+
+                        <h6 class="bg-success text-center"><?php echo $username ?> Has Been Registered!</h6>
+
+                    <?php endif ?>    
                    
                     <form role="form" action="registration.php" method="post" id="login-form" autocomplete="off">
                         <div class="form-group">
@@ -57,7 +76,7 @@
                         </div>
                          <div class="form-group">
                             <label for="password" class="sr-only">Password</label>
-                            <input type="password" name="password" id="key" class="form-control" placeholder="Password">
+                            <input type="password" name="password" id="password" class="form-control" placeholder="Password">
                             <div class="input-group">
                                 <label for="show-password">
                                     <input type="checkbox" id="show-password" />

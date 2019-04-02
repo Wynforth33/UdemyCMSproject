@@ -368,6 +368,7 @@ class ChromePhp
             $this->addSetting($key, $value);
         }
     }
+    
     /**
      * gets a setting
      *

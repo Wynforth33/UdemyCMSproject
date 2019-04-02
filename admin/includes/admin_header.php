@@ -1,7 +1,8 @@
 <?php 
+	include "../includes/ChromePHP.php"; 
     include "../includes/constants.php"; 
     include "../includes/functions.php";
-    include "../includes/ChromePHP.php"; 
+   
 
   // In Charge of Buffering Requests in the headers of scripts so that when done 
   // with scripts it will send everything at one time rather than one at a time  
@@ -11,15 +12,17 @@
     $session = session_id(); 
     $logged_in = null;
     $user_id = null;
-    $user_name = '';
+    $username = '';
     $user_role = '';
+
+
 
 
   // CHECKS IF SESSION_ID HAS BEEN SET (SHOULD BE SET to GET HERE);
     if( isset( $_SESSION[ 'id' ] ) ) {
         $logged_in = "user={$_SESSION[ 'id' ]}";
         $user_id = $_SESSION[ 'id' ];
-        $user_name = $_SESSION[ 'username' ];
+        $username = $_SESSION[ 'username' ];
         $user_role = $_SESSION[ 'role' ];
     }
     
@@ -38,6 +41,7 @@
     } else if ( $user_role && $user_role !== 'admin' ) {
         header("Location: ../index.php?{$logged_in}");
     }
+
 ?>
 
 <!DOCTYPE html>
