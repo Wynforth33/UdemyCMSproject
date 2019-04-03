@@ -16,9 +16,9 @@
                
                 <?php   
                     if( isset( $_POST[ 'submit' ] ) ) {
-                        $search  = $_POST[ 'search' ];
-                        $orderBy = $_POST[ 'orderBy' ];
-                        $order   = $_POST[ 'order' ];
+                        $search  = escape($_POST[ 'search' ]);
+                        $orderBy = escape($_POST[ 'orderBy' ]);
+                        $order   = escape($_POST[ 'order' ]);
 
                         $searchResults = searchPosts( $search, $orderBy, $order, SEARCH_POST_LIMIT ); 
                     }

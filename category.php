@@ -8,20 +8,25 @@
 
     <!-- Page Content -->
     <div class="container">
-        <?php 
-        if( isset( $_GET['category'] ) ) {
-            $cat_id = $_GET['category'];
-            
-            $category = getCategory( $cat_id );
-            
-            $posts = getPostsByCategory( $cat_id, CAT_POST_ORDERBY, CAT_POST_ORDER, CAT_POST_LIMIT );  
-        }
-        ?>
-
         <div class="row">
 
             <!-- Blog Entries Column -->
             <div class="col-md-8">
+                <?php
+                    $cat_id = null;
+                    $category = null;
+
+                    if( isset( $_GET['category'] ) ) {
+                        $cat_id = escape($_GET['category']);
+                        $category = getCategory( $cat_id ); 
+                    }
+
+                    if ( isset( $_GET['page'] ) ) {
+                        $page = escape( $_GET['page'] );
+                    } 
+
+                    $posts = getPostsByPage( $page, null, $cat_id )
+                ?>
 
                 <h1 class="page-header">Category: <?php echo $category ?></h1>
                 
@@ -35,5 +40,10 @@
         </div><!-- .row -->
 
         <hr>
+
+        <?php 
+            $post_count = getPostCountByCategory($cat_id);
+            include "includes/widgets/pager.php"; 
+        ?>
 
 <?php include "includes/footer.php" ?>

@@ -2,94 +2,95 @@
 // DATABASE
     include "db.php";
 
-///////////////////////////////////////////////////////////////////////
 // INDEX
-// 
-// I.     UTILITY FUNCTIONS:
-//   I.A   - CONFIRM QUERY
-//   I.B   - CLEAN VALUE
-//   I.C   - ENCRYPT PASSWORD:
-//
-// II.    POST FUNCTIONS:
-//   II.A  - CREATE POST
-//   II.B  - GET POST
-//   II.C  - GET POSTS  
-//   II.D  - GET POSTS BY CATEGORY
-//   II.E  - GET POSTS BY AUTHOR
-//   II.F  - GET POST COUNT
-//   II.G  - GET DRAFT POST COUNT 
-//   II.H  - GET PUBLISHED POST COUNT 
-//   II.I  - GET POSTS COUNT: 
-//   II.J  - GET POSTS BY PAGE:
-//   II.K  - SEARCH POSTS
-//   II.L  - (READ) DISPLAY POSTS (GENERAL)
-//   II.M  - (READ) DISPLAY POST (GENERAL)
-//   II.N  - (READ) DISPLAY POSTS TABLE DATA (ADMIN)
-//   II.O  - UPDATE POST
-//   II.P  - UPDATE POST STATUS 
-//   II.Q  - (UPDATE) INCREMENT POST'S COMMENT COUNTER
-//   II.R  - (UPDATE) DECREMENT POST'S COMMENT COUNTER
-//   II.S  - (UPDATE) INCREMENT POST'S VIEWS COUNTER:    
-//   II.T  - DELETE POST 
-//
-// III.   CATEGORY FUNCTIONS:
-//   III.A - CREATE CATEGORY
-//   III.B - GET CATEGORY
-//   III.C - GET CATEGORIES
-//   III.D - GET CATEGORY COUNT  
-//   III.E - (READ) DISPLAY CATEGORY TABLE DATA (ADMIN)
-//   III.F - (READ) DISPLAY CATEGORY OPTIONS (ADMIN)
-//   III.G - (READ) DISPLAY CATEGORY LINKS (GENERAL)
-//   III.H - UPDATE CATEGORY
-//   III.I - DELETE CATEGORY
-//
-// IV.    COMMENT FUNCTIONS:
-//   IV.A  - CREATE COMMENT
-//   IV.B  - GET COMMENT
-//   IV.C  - GET COMMENTS
-//   IV.D  - GET COMMENTS BY POST
-//   IV.E  - GET APPROVED COMMENTS BY POST (GENERAL)
-//   IV.F  - GET COMMENTS BY AUTHOR
-//   IV.G  - GET COMMENT COUNT
-//   IV.H  - GET UNAPPROVED COMMENT COUNT   
-//   IV.I  - (READ) DISPLAY COMMENTS (GENERAL)
-//   IV.J  - (READ) DISPLAY COMMENTS TABLE DATA (ADMIN)
-//   IV.K  - (UPDATE) APPROVE COMMENT (ADMIN)
-//   IV.L  - (UPDATE) DENY COMMENT (ADMIN)
-//   IV.M  - DELETE COMMENT (ADMIN)
-//   IV.N  - DELETE COMMENTS
-//
-//  V.    USER FUNCTIONS:
-//   V.A   - CREATE USER
-//   V.B   - REGISTER USER:
-//   V.c   - GET USER
-//   V.D   - GET USERS
-//   V.E   - GET USER BY USERNAME 
-//   V.F   - GET USER COUNT
-//   V.G   - GET SUBSCRIBERS COUNT
-//   V.H   - SEARCH USER BY USERNAME
-//   V.I   - (READ) DISPLAY USERS TABLE DATA ( ADMIN )
-//   V.J   - UPDATE USER
-//   V.K   - DELETE USER 
-//
-//  VI.   LOGIN FUNCTIONS:
-//   VI.A  - CLEAN LOGIN VALUES
-//   VI.B  - GET USER_DATA ARRAY
-//   VI.C  - SESSIONIZE USER DATA   
-//
-//  VII.  PROFILE FUNCTIONS:
-//   VII.A - CREATE PROFILE
-//   VII.B - GET PROFILE
-//   VII.C - UPDATE PROFILE 
-//
-//  VIII. USERS ONLINE FUNCTIONS
-//   VIII.A - LOGIN ONLINE SESSION
-//   VIII.B - GET USERS ONLINE COUNT 
-//   VIII.C - CHECK BY SESSION 
-//   VIII.D - UPDATE ONLINE USER
-//   VIII.E - USERS ONLINE 
-//
-///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
+    // 
+    //     I.    UTILITY FUNCTIONS (Line: 96)
+        //   I.A   - CONFIRM QUERY
+        //   I.B   - ESCAPE STRING
+        //
+    //     II.   POST FUNCTIONS (Line: 117)
+        //   II.A  - CREATE POST
+        //   II.B  - GET POST
+        //   II.C  - GET POSTS  
+        //   II.D  - GET POSTS BY CATEGORY
+        //   II.E  - GET POSTS BY AUTHOR
+        //   II.F  - GET POST COUNT
+        //   II.G  - GET DRAFT POST COUNT 
+        //   II.H  - GET PUBLISHED POST COUNT 
+        //   II.I  - GET POSTS COUNT:
+        //   II.J  - GET POST COUNT BY AUTHOR:
+        //   II.K  - GET POST COUNT BY CATEGORY: 
+        //   II.L  - GET POSTS BY PAGE:
+        //   II.M  - SEARCH POSTS
+        //   II.N  - (READ) DISPLAY POSTS (GENERAL)
+        //   II.O  - (READ) DISPLAY POST (GENERAL)
+        //   II.P  - (READ) DISPLAY POSTS TABLE DATA (ADMIN)
+        //   II.Q  - UPDATE POST
+        //   II.R  - UPDATE POST STATUS 
+        //   II.S  - (UPDATE) INCREMENT POST'S COMMENT COUNTER
+        //   II.T  - (UPDATE) DECREMENT POST'S COMMENT COUNTER
+        //   II.U  - (UPDATE) INCREMENT POST'S VIEWS COUNTER:    
+        //   II.V  - DELETE POST 
+        //
+    //     III.  CATEGORY FUNCTIONS (Line: 644)
+        //   III.A - CREATE CATEGORY
+        //   III.B - GET CATEGORY
+        //   III.C - GET CATEGORIES
+        //   III.D - GET CATEGORY COUNT  
+        //   III.E - (READ) DISPLAY CATEGORY TABLE DATA (ADMIN)
+        //   III.F - (READ) DISPLAY CATEGORY OPTIONS (ADMIN)
+        //   III.G - (READ) DISPLAY CATEGORY LINKS (GENERAL)
+        //   III.H - UPDATE CATEGORY
+        //   III.I - DELETE CATEGORY
+        //
+    //     IV.   COMMENT FUNCTIONS (Line: 820)
+        //   IV.A  - CREATE COMMENT
+        //   IV.B  - GET COMMENT
+        //   IV.C  - GET COMMENTS
+        //   IV.D  - GET COMMENTS BY POST
+        //   IV.E  - GET APPROVED COMMENTS BY POST (GENERAL)
+        //   IV.F  - GET COMMENTS BY AUTHOR
+        //   IV.G  - GET COMMENT COUNT
+        //   IV.H  - GET UNAPPROVED COMMENT COUNT   
+        //   IV.I  - (READ) DISPLAY COMMENTS (GENERAL)
+        //   IV.J  - (READ) DISPLAY COMMENTS TABLE DATA (ADMIN)
+        //   IV.K  - (UPDATE) APPROVE COMMENT (ADMIN)
+        //   IV.L  - (UPDATE) DENY COMMENT (ADMIN)
+        //   IV.M  - DELETE COMMENT (ADMIN)
+        //   IV.N  - DELETE COMMENTS
+        //
+    //     V.    USER FUNCTIONS (Line: 1155)
+        //   V.A   - CREATE USER
+        //   V.B   - REGISTER USER:
+        //   V.C   - GET USER
+        //   V.D   - GET USERS
+        //   V.E   - GET USER BY USERNAME 
+        //   V.F   - GET USER COUNT
+        //   V.G   - GET SUBSCRIBERS COUNT
+        //   V.H   - SEARCH USER BY USERNAME
+        //   V.I   - (READ) DISPLAY USERS TABLE DATA ( ADMIN )
+        //   V.J   - UPDATE USER
+        //   V.K   - DELETE USER 
+        //
+    //     VI.   LOGIN FUNCTIONS (Line: 1391)
+        //   VI.A  - CLEAN LOGIN VALUES
+        //   VI.B  - GET USER DATA ARRAY
+        //   VI.C  - SESSIONIZE USER DATA   
+        //
+    //     VII.  PROFILE FUNCTIONS (Line: 1429)
+        //   VII.A - CREATE PROFILE
+        //   VII.B - GET PROFILE
+        //   VII.C - UPDATE PROFILE 
+        //
+    //     VIII. USERS ONLINE FUNCTIONS (Line: 1507)
+        //   VIII.A - LOGIN ONLINE SESSION
+        //   VIII.B - GET USERS ONLINE COUNT 
+        //   VIII.C - CHECK BY SESSION 
+        //   VIII.D - UPDATE ONLINE USER
+        //   VIII.E - USERS ONLINE 
+    //
+    ///////////////////////////////////////////////////////////////////
 
 // ====================================================================
 // I.   UTILITY FUNCTIONS
@@ -105,23 +106,12 @@
         }
     }
 
-  // I.B - CLEAN VALUE:
-    function cleanString( $string ){
+  // I.B - ESCAPE STRING (Protects against MySql Injection):
+    function escape( $str ){
         global $connection;
 
-        $clean_string = mysqli_real_escape_string( $connection, $string );
-
-        return $clean_string;
+        return mysqli_real_escape_string( $connection, $str );
     }  
-
-  // I.C - ENCRYPT PASSWORD:
-    function encryptPassword($password, $cost_param, $salt) {
-        $salted_hash = "{$cost_param}{$salt}";
-        
-        $crypted_password = crypt( $password, $salted_hash );
-
-        return $crypted_password;
-    }
 
 // ====================================================================
 // II.  POST FUNCTIONS
@@ -288,10 +278,27 @@
     }    
 
   // II.I - GET POSTS COUNT:
-    function getPostsCount() {
+    function getPostsCount($posts='') {
         global $connection;
         
-        $query  = "SELECT * FROM posts ";
+        // IF $POSTS has not been Passed in Fetch $posts from DB
+        if(!$posts) {
+            $query  = "SELECT * FROM posts ";
+
+            $posts = mysqli_query( $connection, $query );
+            confirmQuery( $posts );
+        }
+        
+        $count = mysqli_num_rows($posts);
+
+        return $count;
+    } 
+
+  // II.J - GET POST COUNT BY AUTHOR:
+    function getPostCountByAuthor($author) {
+        global $connection;
+        
+        $query  = "SELECT * FROM posts WHERE post_author = '$author'";
 
         $result = mysqli_query( $connection, $query );
         
@@ -300,16 +307,38 @@
         $count = mysqli_num_rows($result);
 
         return $count;
-    }      
+    }
 
-  // II.J - GET POSTS BY PAGE:
-    function getPostsByPage( $page ) {
+  // II.K - GET POST COUNT BY CATEGORY:
+    function getPostCountByCategory($cat_id) {
+        global $connection;
+        
+        $query  = "SELECT * FROM posts WHERE post_category_id = '$cat_id'";
+
+        $result = mysqli_query( $connection, $query );
+        
+        confirmQuery( $result );
+        
+        $count = mysqli_num_rows($result);
+
+        return $count;
+    }     
+
+  // II.L - GET POSTS BY PAGE:
+    function getPostsByPage( $page, $author='', $cat_id='' ) {
         global $connection;
 
-        $index = ($page-1) * 5; 
-        
-        $query  = "SELECT * FROM posts LIMIT {$index}, 5 ";
+        $index = ($page-1) * 5;
+        $query = '';
 
+        if( $author ){
+            $query  = "SELECT * FROM posts WHERE post_author = '$author' LIMIT {$index}, 5 ";
+        } elseif ( $cat_id ){
+            $query  = "SELECT * FROM posts WHERE post_category_id = '$cat_id' LIMIT {$index}, 5 ";
+        } else {
+            $query  = "SELECT * FROM posts LIMIT {$index}, 5 ";
+        }
+        
         $result = mysqli_query( $connection, $query );
         
         confirmQuery( $result );
@@ -317,7 +346,7 @@
         return $result;
     }  
 
-  // II.K - SEARCH POSTS:
+  // II.M - SEARCH POSTS:
     function searchPosts( $search, $orderBy, $order, $limit ) {
         global $connection;
         
@@ -357,7 +386,7 @@
         }   
     }
 
-  // II.L - (READ) DISPLAY POSTS ( GENERAL ):
+  // II.N - (READ) DISPLAY POSTS ( GENERAL ):
     function displayPosts( $posts ) {  
         global $logged_in;
         $counter = 0;
@@ -410,7 +439,7 @@
         }
     }
 
-  // II.M - (READ) DISPLAY POST ( GENERAL ):
+  // II.O - (READ) DISPLAY POST ( GENERAL ):
     function displayPost( $post ) { 
                 global $logged_in;        
                  $post_id            = $post['post_id'];
@@ -449,7 +478,7 @@
                     <hr> <?php         
     }     
 
-  // II.N - (READ) DISPLAY POSTS TABLE DATA ( ADMIN ):
+  // II.P - (READ) DISPLAY POSTS TABLE DATA ( ADMIN ):
     function displayPostsTable( $posts ) {  
         global $logged_in;
         $logged_in_post = null;
@@ -493,7 +522,7 @@
         }
     }
 
-  // II.O - UPDATE POST:
+  // II.Q - UPDATE POST:
     function updatePost( $cat_id, $title, $status, $author, $image, $image_desc, $tags, $content, $post_id ) {
         global $connection;
         global $logged_in;
@@ -529,7 +558,7 @@
         confirmQuery( $result );
     }
 
-  // II.P - UPDATE POST STATUS: 
+  // II.R - UPDATE POST STATUS: 
     function updatePostStatus( $post_id, $option ) {
         global $connection;
         global $logged_in;
@@ -546,7 +575,7 @@
         header("location: admin_posts.php?{$logged_in}");
     }
   
-  // II.Q - (UPDATE) INCREMENT POST'S COMMENT COUNTER:
+  // II.S - (UPDATE) INCREMENT POST'S COMMENT COUNTER:
     function incrementCommentCount( $post_id ) {
         global $connection;
         
@@ -563,7 +592,7 @@
         confirmQuery( $result );
     }
 
-  // II.R - (UPDATE) DECREMENT POST'S COMMENT COUNTER:
+  // II.T - (UPDATE) DECREMENT POST'S COMMENT COUNTER:
     function decrementCommentCount( $post_id ) {
         global $connection;
         
@@ -580,7 +609,7 @@
         confirmQuery( $result );
     }
 
-  // II.S - (UPDATE) INCREMENT POST'S VIEWS COUNTER:
+  // II.U - (UPDATE) INCREMENT POST'S VIEWS COUNTER:
     function incrementViewsCount( $post_id ) {
         global $connection;
         
@@ -593,7 +622,7 @@
         confirmQuery( $result );
     }  
 
-  // II.T - DELETE POST:
+  // II.V - DELETE POST:
     function deletePost( $id ) {
         global $logged_in;
         global $connection;
@@ -791,7 +820,7 @@
 // IV.  COMMENT FUNCTIONS
 // ====================================================================
 
-  // Iv.A - CREATE COMMENT: 
+  // IV.A - CREATE COMMENT: 
     function createComment( $post_id, $author, $email, $content ) {
         global $connection; 
         
@@ -891,7 +920,9 @@
             $query  .= "AND comment_status = 'Approved' ";
             $query  .= "ORDER BY $orderBy $order "; 
             $query  .= "LIMIT $limit ";
+
         } else {
+
             // LIMITLESS QUERY
             $query   = "SELECT * FROM comments ";
             $query  .= "WHERE comment_post_id = $post_id ";
@@ -945,22 +976,7 @@
         $count = mysqli_num_rows($result);
 
         return $count;
-    }  
-
-  // IV.G - GET COMMENT COUNT by POST_ID:
-    function getCommentCountByPostId( $post_id ) {
-        global $connection;
-        
-        $query = "SELECT * FROM comments WHERE comment_post_id = '$post_id' ";
-
-        $result = mysqli_query( $connection, $query );
-        
-        confirmQuery( $result );
-        
-        $count = mysqli_num_rows($result);
-
-        return $count;
-    }  
+    }
 
   // IV.H - GET UNAPPROVED COMMENT COUNT:
     function getUnapprovedCommentCount() {
@@ -980,10 +996,10 @@
   // IV.I - (READ) DISPLAY COMMENTS (GENERAL):
     function displayComments( $comments ) {    
         while ( $row = mysqli_fetch_assoc( $comments ) ) {
-                 $comment_id      = $row['comment_id'];
-                 $comment_author  = $row['comment_author'];
-                 $comment_date    = $row['comment_date'];
-                 $comment_content = $row['comment_content'];
+                 $comment_id         = $row['comment_id'];
+                 $comment_author     = $row['comment_author'];
+                 $comment_date       = $row['comment_date'];
+                 $comment_content    = $row['comment_content'];
             ?>
                
                 <!-- Comment -->
@@ -1002,33 +1018,31 @@
                         <?php echo $comment_content; ?>
                         
                     </div><!-- .media-body -->
+                    <button class="btn btn-xs btn-primary" id="show-comment-form">Reply</button>
 
-                    <label for="show-comment-form">
-                        <input type="checkbox" id="show-comment-form" />
-                        Leave a Reply
-                    </label>
+                    <div id="comment-form" style="display: none">
+                        <form role="form" action="" method="Post">
+                            <div class="form-group">
+                               <label for="comment_author">Author</label>
+                                <input type="text" class="form-control" name="comment_author">
+                            </div> 
+                            
+                            <div class="form-group">
+                                <label for="comment_email">Email</label>
+                                <input type="email" class="form-control" name="comment_email">
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="comment_content">Your Comment</label>
+                                <textarea class="form-control" rows="3" name="comment_content"></textarea>
+                            </div>
+                        </form>
+                    </div><!-- #comment-form -->
 
-                    <form role="form" action="" method="Post" id="comment-form">
-                        <input type="hidden" name="current_comment_id" value="<?php echo "$comment_id" ?>">
-                        <div class="form-group">
-                           <label for="comment_author">Author</label>
-                            <input type="text" class="form-control" name="comment_author">
-                        </div> 
-                        
-                        <div class="form-group">
-                            <label for="comment_email">Email</label>
-                            <input type="email" class="form-control" name="comment_email">
-                        </div>
-                       
-                        <div class="form-group">
-                            <label for="comment_content">Your Comment</label>
-                            <textarea class="form-control" rows="3" name="comment_content"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary" name="reply_comment">Reply</button>
-                    </form>
+                    <hr>
 
-                </div> <!-- .media -->            
-               
+                </div> <!-- .media -->       
+                
       <?php }   
     }
 
@@ -1390,7 +1404,7 @@
         return $safe_user; 
     }
 
-  // VI.B - GET USER_DATA ARRAY:
+  // VI.B - GET USER DATA ARRAY:
     function getUserDataArray( $username ) {
 
         $result = getUserByUsername( $username );
@@ -1494,11 +1508,11 @@
 // ====================================================================
 
  // VIII.A - LOGIN ONLINE SESSION
-    function loginOnlineSession($session, $time, $id, $role) {
+    function logOnlineSession($session, $time, $id, $role) {
         global $connection; 
         
         $query  = "INSERT INTO users_online(session, time, online_user_id, online_user_role) ";
-        $query .= "VALUES('$session','$time','$user_id','$user_role') ";
+        $query .= "VALUES('$session','$time','$id','$role') ";
 
         $result = mysqli_query( $connection, $query );
 
@@ -1534,11 +1548,9 @@
 
         confirmQuery( $result );
 
-        if($result){
-            return 1;
-        } else {
-            return 0;
-        }
+        $count = mysqli_num_rows($result);
+
+        return $count;
     }
    
  // VIII.D - UPDATE ONLINE USER
@@ -1559,9 +1571,9 @@
             $time_out_in_seconds = 60;
             $time_out = $time - $time_out_in_seconds;
 
-            $users_count = getUsersOnlineCount($time_out);
+            $count = getUsersOnlineCount($time_out);
 
-            echo $users_count;
+            echo $count;
         } 
     }
 

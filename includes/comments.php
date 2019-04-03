@@ -5,17 +5,18 @@
     <?php 
     // CREATE COMMENT HANDLER
         if( isset( $_POST[ 'create_comment' ] ) ) {
-            $comment_author  = $_POST[ 'comment_author' ];
-            $comment_email   = $_POST[ 'comment_email' ];
-            $comment_content = $_POST[ 'comment_content' ];
+            $comment_author  = escape( $_POST[ 'comment_author' ] );
+            $comment_email   = escape( $_POST[ 'comment_email' ] );
+            $comment_content = escape( $_POST[ 'comment_content' ] );
+            $current_comment_id = 0;
 
             if ( !empty($comment_author) && !empty($comment_email) && !empty($comment_content) ) {
-                createComment($post_id, $comment_author, $comment_email, $comment_content);
+                createComment($post_id, $comment_author, $comment_email, $comment_content );
             } else {
                 // echo "<script>alert('Fields Cannot Be Empty!')</script>";
                 echo "<p class='bg-danger'>Fields Cannot Be Empty</p>";
             }
-        }
+        } 
     ?>
     <form role="form" action="" method="Post">
         <div class="form-group">
@@ -42,7 +43,7 @@
    
 <?php  
 
-$comments = getApprovedCommentsByPost( $post_id, 'comment_id', 'DESC', null ); 
+$comments = getApprovedCommentsByPost( escape( $post_id ), 'comment_id', 'ASC', null ); 
 
 displayComments( $comments );
 

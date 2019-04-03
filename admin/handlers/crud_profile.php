@@ -1,9 +1,9 @@
 <?php 
     $images_dir = "../images";
 
-    // (READ) 'GET USER' 
+// (READ) 'GET USER' 
     if( isset( $_SESSION[ 'id' ] ) ){
-        $user_id = $_SESSION[ 'id' ];
+        $user_id = escape( $_SESSION[ 'id' ] );
 
         // GET USER DATA
         $user = getUser($user_id);
@@ -12,18 +12,18 @@
         $user_profile = getProfile($user_id);
     }
     
-    // 'UPDATE USER' 
+// 'UPDATE USER' 
     if( isset( $_POST[ 'update_user' ] ) ){
-        $user_id          = $_POST[ 'user_id' ];
-        $username         = $_POST[ 'username' ];
-        $user_password    = $_POST[ 'user_password' ];
-        $user_fname       = $_POST[ 'user_fname' ];
-        $user_lname       = $_POST[ 'user_lname' ];
-        $user_image       = $_FILES[ 'user_image' ][ 'name' ];
-        $user_image_temp  = $_FILES[ 'user_image' ][ 'tmp_name' ];
-        $user_image_error = $_FILES[ 'user_image' ][ 'error' ];
-        $user_email       = $_POST[ 'user_email' ];
-        $user_role        = $_POST[ 'user_role' ];
+        $user_id          = escape( $_POST[ 'user_id' ] );
+        $username         = escape( $_POST[ 'username' ] );
+        $user_password    = escape( $_POST[ 'user_password' ] );
+        $user_fname       = escape( $_POST[ 'user_fname' ] );
+        $user_lname       = escape( $_POST[ 'user_lname' ] );
+        $user_image       = escape( $_FILES[ 'user_image' ][ 'name' ] );
+        $user_image_temp  = escape( $_FILES[ 'user_image' ][ 'tmp_name' ] );
+        $user_image_error = escape( $_FILES[ 'user_image' ][ 'error' ] );
+        $user_email       = escape( $_POST[ 'user_email' ] );
+        $user_role        = escape( $_POST[ 'user_role' ] );
 
         // CHECK FOR ERROR CODES ON IMAGE UPLOAD
         if ( $user_image_error && $user_image_error === 1 ) {

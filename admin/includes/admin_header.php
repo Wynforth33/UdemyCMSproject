@@ -1,5 +1,5 @@
 <?php 
-	include "../includes/ChromePHP.php"; 
+	include "../includes/ChromePHP.php";
     include "../includes/constants.php"; 
     include "../includes/functions.php";
    
@@ -15,21 +15,17 @@
     $username = '';
     $user_role = '';
 
-
-
-
-  // CHECKS IF SESSION_ID HAS BEEN SET (SHOULD BE SET to GET HERE);
+ // CHECKS IF SESSION_ID HAS BEEN SET (SHOULD BE SET to GET HERE);
     if( isset( $_SESSION[ 'id' ] ) ) {
-        $logged_in = "user={$_SESSION[ 'id' ]}";
-        $user_id = $_SESSION[ 'id' ];
-        $username = $_SESSION[ 'username' ];
-        $user_role = $_SESSION[ 'role' ];
+        $user_id   = escape( $_SESSION[ 'id' ] );
+        $username  = escape( $_SESSION[ 'username' ] );
+        $user_role = escape( $_SESSION[ 'role' ] );
+        $logged_in = "user={$user_id}";
     }
     
-    $exists = checkBySession( $session );
-
-    if(!$exists){
-        loginOnlineSession( $session, $time, $user_id, $user_role );
+  // CHECKS TO SEE IF CURRENT SESSION HAS ALREADY BEEN SAVED; IF HASN'T LOG SESSION TO DB, ELSE UPDATE SESSION IN DB
+    if(!checkBySession( $session )){
+        logOnlineSession( $session, $time, $user_id, $user_role );
     } else {
         updateOnlineUser( $session, $time, $user_id, $user_role );
     }

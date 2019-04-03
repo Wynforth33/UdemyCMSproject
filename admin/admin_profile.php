@@ -1,7 +1,6 @@
 <?php 
     include "includes/admin_header.php";
 
-    $user_id = null;
     $user = null;
     $user_profile = null;
     $source = null;

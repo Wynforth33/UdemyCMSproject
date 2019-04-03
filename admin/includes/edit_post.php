@@ -38,6 +38,7 @@
         <label for="post_status">Status</label>
         <select name="post_status">
             <option value=""><?php echo $post[ 'post_status' ]; ?></option>
+
             <?php if ($post[ 'post_status' ] === 'draft' ) : ?>
               
               <option value="published">Publish</option>
@@ -47,6 +48,7 @@
               <option value="draft">Draft</option>  
 
             <?php endif; ?>
+            
         </select>
     </div><!-- .form-group -->
     

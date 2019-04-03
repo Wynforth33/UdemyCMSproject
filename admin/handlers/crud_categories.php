@@ -1,23 +1,25 @@
 <?php 
-    // 'CREATE CATEGORY'    
+// 'CREATE CATEGORY' 
     if( isset( $_POST[ 'submit' ] ) ) { 
-        $cat_title = $_POST[ 'cat_title' ];
+        $cat_title = escape( $_POST[ 'cat_title' ] );
 
         createCategory( $cat_title ); 
-    } 
+    }
 
-    // 'UPDATE CATEGORY' 
+// 'UPDATE CATEGORY'
     if( isset( $_POST[ 'update' ] ) ) {
-        $cat_id = $_GET['edit'];
-        $updated_title = $_POST['cat_title'];
+        $cat_id = escape( $_GET['edit'] );
+        $updated_title = escape( $_POST['cat_title'] );
 
         updateCategory( $cat_id, $updated_title );
     }
 
-    // 'DELETE CATEGORY'
+// 'DELETE CATEGORY'
     if( isset( $_GET[ 'delete' ] ) ) { 
-        $delete_id = $_GET['delete'];
+        if( isset( $_SESSION['user_role'] ) && $_SESSION['user_role'] === 'admin' ) {
+            $delete_id = escape( $_GET['delete'] );
 
-        deleteCategory( $delete_id ); 
+            deleteCategory( $delete_id ); 
+        }
     }   
 ?>

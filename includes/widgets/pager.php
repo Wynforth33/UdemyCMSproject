@@ -5,7 +5,7 @@
         $pages_left = $page_count - $page;
         $isLogged = "";
 
-        // Modify $logged_in to be passed Correctly by links; so that if the user is not logded in Null is sent. 
+      // Modify $logged_in to be passed Correctly by links; so that if the user is not logded in Null is sent. 
         if($logged_in){
             $isLogged = "&{$logged_in}"; 
         }

@@ -12,16 +12,14 @@ include "functions.php";
 include "constants.php";
 
 if( isset($_POST[ 'login' ]) ) {
-    $username = $_POST[ 'username' ];
-    $password = $_POST[ 'password' ];
+    $username = escape( $_POST[ 'username' ] );
+    $password = escape( $_POST[ 'password' ] );
 
-    // CLEAN UP VALUES FOR SAFE USE WITH DATABASE
-    $safe_user_values = cleanLoginValues( $username, $password );
-
-    $password = password_hash( $safe_user_values['password'], PASSWORD_BCRYPT, array('cost' => 12) ); 
+    // ENCRYPT PASSWORD
+    $password = password_hash( $password, PASSWORD_BCRYPT, array('cost' => 12) ); 
 
     // CHECKS IF USER EXISTS; IF EXISTS WILL RETURN $USER DATA AS AN ARRAY, IF DOESN'T EXIST WILL RETURN 0 (FALSE)
-    $user_data = getUserDataArray( $safe_user_values['username'] );
+    $user_data = getUserDataArray( $username );
 
     // IF USER DOES NOT EXIST, REDIRECT BACK TO INDEX (Failure Trigger - USERNAME DOES NOT EXIST)
     if ( !$user_data ) {

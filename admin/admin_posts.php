@@ -31,7 +31,7 @@
             break;
 
             default: 
-            include "includes/posts_table.php";
+            include "includes/table_posts.php";
             break;
         }   
     ?>                      

@@ -3,33 +3,33 @@
     include "constants.php"; 
     include "functions.php";
     
-
   // In Charge of Buffering Requests in the headers of scripts so that when done 
   // with scripts it will send everything at one time rather than one at a time  
     ob_start();
     session_start();
-    $time = time();
-    $session = session_id(); 
+
+  // NECESSARY GLOBAL VARIABLES 
+    $time      = time();
+    $session   = session_id(); 
     $logged_in = null; 
     $user_id   = null; 
     $user_name = null; 
     $user_role = null;
+    $posts     = null; 
+    $page      = 1;
 
   // CHECKS IF USER ID HAS BEEN SESSIONIZED (SHOULD BE SET to GET HERE);
     if( isset( $_GET[ 'user' ] ) ) {
-        $logged_in = "user={$_GET[ 'user' ]}";
-        $user_id = $_GET[ 'user' ];
-        $user_data = getUser($user_id);
+        $user_id   = escape( $_GET[ 'user' ] );
+        $logged_in = "user={$user_id}";
+        $user_data = getUser( $user_id );
         $user_name = $user_data[ 'username' ];
         $user_role = $user_data[ 'user_role' ];
     }
 
-  //  CHECKS TO SEE IF CURRENT SESSION HAS ALREADY BEEN SAVED
-    $exists = checkBySession( $session );
-
-    // IF DOESN'T EXIST CREATES NEW SESSION DATA IN DB; ELSE UPDATES SESSION DATA ALREADY IN DB
-    if(!$exists){
-        loginOnlineSession( $session, $time, $user_id, $user_role );
+  // CHECKS TO SEE IF CURRENT SESSION HAS ALREADY BEEN SAVED; IF HASN'T LOG SESSION TO DB, ELSE UPDATE SESSION IN DB
+    if(!checkBySession( $session )){
+        logOnlineSession( $session, $time, $user_id, $user_role );
     } else {
         updateOnlineUser( $session, $time, $user_id, $user_role );
     }

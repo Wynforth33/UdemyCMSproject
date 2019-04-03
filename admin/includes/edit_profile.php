@@ -1,5 +1,3 @@
-<!-- CONTENT 
-======================================================================-->
 <h2>Edit Profile</h2>
   
 <form action="admin_profile.php?<?php echo $logged_in; ?>" method="Post" enctype="multipart/form-data">
@@ -35,6 +33,7 @@
               <option value="test user">subscriber</option>  
 
             <?php endif; ?>
+            
         </select>
     </div><!-- .form-group -->
     
@@ -85,6 +84,4 @@
      
 </form>
 
-<!--=====================================================================
-END CONTENT -->
 

@@ -8,29 +8,22 @@
 
     <!-- Page Content -->
     <div class="container">
-
-        <?php
-            $posts = null;
-            $page = 1; 
-
-            if( isset( $_GET['author'] ) ) {
-                $author = $_GET['author'];
-                $posts_total = getPostsByAuthor( $author, AUTHOR_POST_ORDERBY, AUTHOR_POST_ORDER, null ); 
-                $posts = getPostsByAuthor( $author, AUTHOR_POST_ORDERBY, AUTHOR_POST_ORDER, AUTHOR_POST_LIMIT );  
-            }
-
-            $post_count = mysqli_num_rows($posts_total);
-
-        ?>
-
         <div class="row">
 
             <!-- Blog Entries Column -->
             <div class="col-md-8">
                 <?php
+                    $author = null; 
+
+                    if( isset( $_GET['author'] ) ) {
+                        $author = escape( $_GET['author'] );
+                    }
+
                     if ( isset( $_GET['page'] ) ) {
-                        $page = $_GET['page'];
+                        $page = escape( $_GET['page'] );
                     } 
+
+                    $posts = getPostsByPage( $page, $author, null );
                 ?>
 
                 <h1 class="page-header">Author: <?php echo $author ?></h1>
@@ -46,6 +39,10 @@
 
         <hr>
 
-        <?php include "includes/widgets/pager.php" ?>
+        <?php 
+            $post_count = getPostCountByAuthor($author);
+            
+            include "includes/widgets/pager.php"; 
+        ?>
 
 <?php include "includes/footer.php" ?>

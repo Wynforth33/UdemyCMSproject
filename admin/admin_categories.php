@@ -29,10 +29,10 @@
           <?php 
             // 'UPDATE CATEGORY FORM' [HANDLER]; Only appears if currently 'Editing' a Category.
               if( isset( $_GET['edit'] ) ) {
-                  $cat_id = $_GET['edit'];
+                  $cat_id = escape( $_GET['edit'] );
                   $category = getCategory( $cat_id ); 
 
-                  include "includes/update_categories.php";
+                  include "includes/edit_categories.php";
               } 
           ?>
 
@@ -41,21 +41,7 @@
      <!-- CATEGORY TABLE -->
      <div class="col-md-6">
 
-         <table id="myTable" class="table table-bordered table-hover">
-             <thead>
-                 <tr>
-                     <th>Id</th>
-                     <th>Category Title</th>
-                     <th>Edit</th>
-                     <th>Delete</th>
-                 </tr>
-             </thead>
-             <tbody>
-
-                 <?php displayCategoryTable( $categories ) ?>
-
-             </tbody>
-         </table>
+         <?php include "includes/table_categories.php" ?>
 
      </div><!-- .col-md-6 -->     
   </div><!-- .row -->               

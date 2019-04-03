@@ -9,23 +9,18 @@
     
 
     if( isset( $_POST['submit'] ) ) {
-        $username      = $_POST['username'];
-        $user_email    = $_POST['email'];
-        $user_password = $_POST['password'];
+        $username      = escape($_POST['username']);
+        $user_email    = escape($_POST['email']);
+        $user_password = escape($_POST['password']);
 
         // CHECK TO MAKE SURE THERE ARE NO EMPTY FIELDS
         if ( !empty($username) && !empty($user_email) && !empty($user_password) ) {
 
-            // CLEAN REGISTRATION VALUE
-            $username      = cleanString( $username );
-            $user_email    = cleanString( $user_email );
-            $user_password = cleanString( $user_password );
-
-            $exists = getUserByUsername( $username );
-
-            if($exists){
+            // CHECKS IF USERNAME ALREADY EXISTS; IF EXISTS WILL THROW ERROR MESSAGE
+            if( getUserByUsername( $username ) ){
                 $isMessage = true;
                 $message = "Username Already Exists!";
+
             } else {
                 // ENCRYPT PASSWORD
                 $user_password = password_hash( $user_password, PASSWORD_BCRYPT, array('cost' => 12) );
@@ -38,7 +33,6 @@
                     $message = "Database Registration Process failed!";
                 }
             }
-
         // IF EMPTY FIELDS GIVE WARNING
         } else {
             $isMessage = true;
@@ -58,12 +52,17 @@
             <div class="col-xs-6 col-xs-offset-3">
                 <div class="form-wrap">
                     <h1>Register</h1>
-
+                    
+                    <!-- NOTIFIES USER OF SUCCESSFUL REGISTRATION; ELSEIF THERE IS A ERROR MESSAGE IT IS DISPLAYED -->
                     <?php if( isset( $_POST['submit'] ) && $register_id  ) : ?>
 
                         <h6 class="bg-success text-center"><?php echo $username ?> Has Been Registered!</h6>
 
-                    <?php endif ?>    
+                    <?php elseif( $isMessage ) ?>   
+
+                        <h6 class="bg-danger text-center"><?php echo $message; ?></h6>
+
+                    <?php endif ?> 
                    
                     <form role="form" action="registration.php" method="post" id="login-form" autocomplete="off">
                         <div class="form-group">
@@ -84,13 +83,6 @@
                                 </label>
                             </div>
                         </div>
-
-                    <?php if ($isMessage) : ?>
-
-                        <h6 class="bg-danger text-center"><?php echo $message; ?></h6>
-
-                    <?php endif ?>
-                
                         <input type="submit" name="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Register">
                     </form>
                  

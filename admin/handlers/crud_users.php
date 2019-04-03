@@ -3,21 +3,21 @@
     $isMessage = false;
     $message = null;
 
-    // 'CREATE USER'
+// 'CREATE USER'
     if( isset( $_POST[ 'create_user' ] ) ) { 
         // GATHER ALL FORM VALUES, CLEAN THEM FOR DATABASE INSERTION, and SAVE THEM TO VARIABLES
-        $username          = cleanString($_POST[ 'username' ]);
-        $user_password     = cleanString($_POST[ 'user_password' ]);
-        $user_fname        = cleanString($_POST[ 'user_fname' ]);
-        $user_lname        = cleanString($_POST[ 'user_lname' ]);
-        $user_image        = cleanString($_FILES[ 'user_image' ][ 'name' ]);
-        $user_image_temp   = cleanString($_FILES[ 'user_image' ][ 'tmp_name' ]);
-        $user_image_error  = cleanString($_FILES[ 'user_image' ][ 'error' ]);
-        $user_email        = cleanString($_POST[ 'user_email' ]);
-        $user_role         = cleanString($_POST[ 'user_role' ]);
-        $user_about_me     = cleanString($_POST[ 'about_me' ]);
-        $user_my_education = cleanString($_POST[ 'my_education' ]);
-        $user_my_work      = cleanString($_POST[ 'my_work' ]);
+        $username          = escape( $_POST[ 'username' ] );
+        $user_password     = escape( $_POST[ 'user_password' ] );
+        $user_fname        = escape( $_POST[ 'user_fname' ] );
+        $user_lname        = escape( $_POST[ 'user_lname' ] );
+        $user_image        = escape( $_FILES[ 'user_image' ][ 'name' ] );
+        $user_image_temp   = escape( $_FILES[ 'user_image' ][ 'tmp_name' ] );
+        $user_image_error  = escape( $_FILES[ 'user_image' ][ 'error' ] );
+        $user_email        = escape( $_POST[ 'user_email' ] );
+        $user_role         = escape( $_POST[ 'user_role' ] );
+        $user_about_me     = escape( $_POST[ 'about_me' ] );
+        $user_my_education = escape( $_POST[ 'my_education' ] );
+        $user_my_work      = escape( $_POST[ 'my_work' ] );
 
         // CHECK FOR ERROR CODES ON IMAGE UPLOAD
         if ( $user_image_error && $user_image_error === 1 ) {
@@ -50,7 +50,7 @@
             $created_user_id = createUser( $username, $user_password, $user_fname, $user_lname, $user_email, $user_image, $user_role );
 
             // IF USER CREATION FAILS WILL THROW ERROR
-            if ( $created_user_id ) {
+            if ( !$created_user_id ) {
                 $isMessage = true;
                 $message   = "Database Creation Process Failed!";
             }
@@ -65,25 +65,25 @@
         }
     }
 
-    // (READ) 'GET USER' 
+// (READ) 'GET USER' 
     if( isset( $_GET[ 'user_id' ] ) ) {
-        $user_id = $_GET[ 'user_id' ]; 
+        $user_id = escape( $_GET[ 'user_id' ] ); 
 
         $post = getUser( $user_id );
     }
     
-    // 'UPDATE USER' 
+// 'UPDATE USER' 
     if( isset( $_POST[ 'update_user' ] ) ){
-        $user_id          = $_POST[ 'user_id' ];
-        $username         = $_POST[ 'username' ];
-        $user_password    = $_POST[ 'user_password' ];
-        $user_fname       = $_POST[ 'user_fname' ];
-        $user_lname       = $_POST[ 'user_lname' ];
-        $user_image       = $_FILES[ 'user_image' ][ 'name' ];
-        $user_image_temp  = $_FILES[ 'user_image' ][ 'tmp_name' ];
-        $user_image_error = $_FILES[ 'user_image' ][ 'error' ];
-        $user_email       = $_POST[ 'user_email' ];
-        $user_role        = $_POST[ 'user_role' ];
+        $user_id          = escape( $_POST[ 'user_id' ] );
+        $username         = escape( $_POST[ 'username' ] );
+        $user_password    = escape( $_POST[ 'user_password' ] );
+        $user_fname       = escape( $_POST[ 'user_fname' ] );
+        $user_lname       = escape( $_POST[ 'user_lname' ] );
+        $user_image       = escape( $_FILES[ 'user_image' ][ 'name' ] );
+        $user_image_temp  = escape( $_FILES[ 'user_image' ][ 'tmp_name' ] );
+        $user_image_error = escape( $_FILES[ 'user_image' ][ 'error' ] );
+        $user_email       = escape( $_POST[ 'user_email' ] );
+        $user_role        = escape( $_POST[ 'user_role' ] );
 
         // ENCYRPT PASSWORD FOR STORAGE
         $user_password = password_hash( $user_password, PASSWORD_BCRYPT, array('cost' => 12) );
@@ -109,10 +109,12 @@
         }
     }
 
-    // 'DELETE USER' 
+// 'DELETE USER' 
     if( isset( $_GET[ 'delete' ] ) ) {
-        $delete_id = $_GET[ 'delete' ];
+        if( isset( $_SESSION['user_role'] ) && $_SESSION['user_role'] === 'admin' ) {
+            $delete_id = escape( $_GET[ 'delete' ] );
 
-        deleteUser( $delete_id ); 
+            deleteUser( $delete_id ); 
+        }
     }
 ?>

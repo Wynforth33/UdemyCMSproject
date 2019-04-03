@@ -3,15 +3,13 @@
     $user    = null;
     
     if(isset($_GET['user_id'] )){
-        $user_id = $_GET['user_id'];
-        $user = getUser($user_id);
+        $user_id = escape( $_GET['user_id'] );
+        $user = getUser( $user_id );
     }
 
     $user_role = $user[ 'user_role' ];
 ?>
 
-<!-- CONTENT 
-======================================================================-->
 <h2>Edit User</h2>
 
 <?php if( isset( $_POST['update_user'] ) && !$isMessage ) : ?> 
@@ -90,7 +88,4 @@
     </div><!-- .form-group -->
      
 </form>
-
-<!--=====================================================================
-END CONTENT -->
 

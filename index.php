@@ -13,12 +13,11 @@
             <!-- Blog Entries Column -->
             <div class="col-md-8">
                 <?php
-                    $posts = getPosts( HOME_POST_ORDERBY, HOME_POST_ORDER, HOME_POST_LIMIT );
-
                     if ( isset( $_GET['page'] ) ) {
-                        $page = $_GET['page'];
-                        $posts = getPostsByPage( $page );
+                        $page = escape($_GET['page']);
                     } 
+
+                    $posts = getPostsByPage( $page, null, null );
                 ?>
 
                 <h1 class="page-header"><?php echo HOME_HEAD ?> <small><?php echo HOME_DESC ?></small></h1>
@@ -35,9 +34,8 @@
         <hr>
         
         <?php 
-            $post_count = getPostsCount();
-            $page = 1;
-
+            $post_count = getPostsCount(null);
+            
             include "includes/widgets/pager.php"; 
         ?>
      

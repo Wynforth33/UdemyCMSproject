@@ -29,7 +29,7 @@
                    <?php 
                       if( isset( $user_role ) ) {
                           if ( $user_role === 'admin' && isset( $_GET['post_id'] ) ) {
-                              $post_id = $_GET['post_id'];
+                              $post_id = escape( $_GET['post_id'] );
 
                               echo "<li><a href='admin/admin_posts.php?source=edit_post&post_id={$post_id}&{$logged_in}'>Edit Post</a></li>";
                           }
