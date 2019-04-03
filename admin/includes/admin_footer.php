@@ -17,6 +17,9 @@
     <!-- CK5 WYSIWIG EDITOR CDN - "https://ckeditor.com/docs/ckeditor5/latest/builds/guides/overview.html#classic-editor" (Documentation) -->
     <script src="https://cdn.ckeditor.com/ckeditor5/12.0.0/classic/ckeditor.js"></script>
 
+    <!--DATATABLES CDN  -->
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
     <!-- GENERAL APPLICATION SCRIPTS -->
     <script src="js/scripts.js"></script>
     

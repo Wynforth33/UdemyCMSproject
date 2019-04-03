@@ -1,6 +1,6 @@
 <h2>ALL USERS</h2>
 
-<table class="table table-bordered table-hover">
+<table id="myTable" class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>Id</th>
@@ -9,6 +9,8 @@
             <th>Last Name</th>
             <th>Email</th>
             <th>Role</th>
+            <th>Edit</th>
+            <th>Delete</th>
         </tr>
     </thead>
     <tbody>

@@ -45,6 +45,29 @@ $(document).ready(function(){
     	}
     }
 
+  // SHOW/HIDE COMMENT TO COMMENT FUNCTIONALITY
+    // Gather DOM References
+    var password = document.querySelector("#password");
+    var toggle   = document.querySelector("#show-password");
+
+    // IF TOGGLE ELEMENT EXISTS ADD FUNCTIONALITY
+    if(toggle) {
+      // NOTE: the "(input)" event doesn't work on checkboxes in Safari or IE. As such, 
+      // we use the "(click)" event to make this work cross-browser.
+      toggle.addEventListener("click", handleToggleClick, false);
+
+      // We handle the toggle click, changing the TYPE of password input. 
+      function handleToggleClick(e) {
+          if ( this.checked ) {
+              console.warn( "Change input 'type' to: Text");
+              password.type = "text";
+          } else {
+              console.warn( "Change input 'type' to: Password");
+              password.type = "password";
+          }
+      }
+    }
+
   // CK5 WYSWIG EDITOR
     // GRAB EDITOR ELEMENT IF EXISTS
     var body = document.querySelector( '#body' );
@@ -81,6 +104,12 @@ $(document).ready(function(){
     $('#load-screen').delay(250).fadeOut(600, function(){
       $(this).remove();
     });
+
+
+  // DATATABLES FUNCTIONALITY
+    $(document).ready( function () {
+      $('#myTable').DataTable();
+    } );
 
 });
 

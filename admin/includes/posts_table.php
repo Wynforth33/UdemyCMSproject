@@ -2,7 +2,7 @@
 
     <h2>ALL POSTS<?php echo $subtitle; ?></h2>
 
-    <table class="table table-bordered table-hover">
+    <table  id="myTable" class="table table-bordered">
         
         <div id="bulkOptionsContainer" class="col-xs-4">
             <select class="form-control custom-select" name="bulk_options" id="">

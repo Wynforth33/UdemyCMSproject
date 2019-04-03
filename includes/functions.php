@@ -485,8 +485,8 @@
             $table_row .= "<td>{$post_comment_count}</td>";
             $table_row .= "<td>{$post_views_count}</td>";
             $table_row .= "<td>{$post_date}</td>";
-            $table_row .= "<td><a href='admin_posts.php?source=edit_post&post_id={$post_id}{$logged_in_post}'>Edit</td>";
-            $table_row .= "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete'); \" href='admin_posts.php?delete={$post_id}{$logged_in_post}'>Delete</td>";
+            $table_row .= "<td><a class='btn btn-warning' href='admin_posts.php?source=edit_post&post_id={$post_id}{$logged_in_post}'>Edit</a></td>";
+            $table_row .= "<td><a class='btn btn-danger' onClick=\"javascript: return confirm('Are you sure you want to delete'); \" href='admin_posts.php?delete={$post_id}{$logged_in_post}'>Delete</a></td>";
             $table_row .= "</tr>";
         
             echo $table_row; 
@@ -714,8 +714,8 @@
              $table_row  = "<tr>";
              $table_row .= "<td>{$cat_id}</td>";
              $table_row .= "<td><a href='../category.php?category={$cat_id}{$logged_in_cat}'>{$cat_title}</td>";
-             $table_row .= "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete'); \" href='admin_categories.php?delete={$cat_id}{$logged_in_cat}'>Delete</td>";
-             $table_row .= "<td><a href='admin_categories.php?edit={$cat_id}{$logged_in_cat}'>Edit</td>";
+             $table_row .= "<td><a class='btn btn-warning' href='admin_categories.php?edit={$cat_id}{$logged_in_cat}'>Edit</td>";
+             $table_row .= "<td><a class='btn btn-danger' onClick=\"javascript: return confirm('Are you sure you want to delete'); \" href='admin_categories.php?delete={$cat_id}{$logged_in_cat}'>Delete</td>";
              $table_row .= "</tr>";
              
              echo $table_row;
@@ -947,6 +947,21 @@
         return $count;
     }  
 
+  // IV.G - GET COMMENT COUNT by POST_ID:
+    function getCommentCountByPostId( $post_id ) {
+        global $connection;
+        
+        $query = "SELECT * FROM comments WHERE comment_post_id = '$post_id' ";
+
+        $result = mysqli_query( $connection, $query );
+        
+        confirmQuery( $result );
+        
+        $count = mysqli_num_rows($result);
+
+        return $count;
+    }  
+
   // IV.H - GET UNAPPROVED COMMENT COUNT:
     function getUnapprovedCommentCount() {
         global $connection;
@@ -973,7 +988,7 @@
                
                 <!-- Comment -->
                 <div class="media">
-                   
+                    
                     <a class="pull-left" href="#">
                         <img class="media-object" src="http://placehold.it/64x64" alt="">
                     </a>
@@ -987,6 +1002,31 @@
                         <?php echo $comment_content; ?>
                         
                     </div><!-- .media-body -->
+
+                    <label for="show-comment-form">
+                        <input type="checkbox" id="show-comment-form" />
+                        Leave a Reply
+                    </label>
+
+                    <form role="form" action="" method="Post" id="comment-form">
+                        <input type="hidden" name="current_comment_id" value="<?php echo "$comment_id" ?>">
+                        <div class="form-group">
+                           <label for="comment_author">Author</label>
+                            <input type="text" class="form-control" name="comment_author">
+                        </div> 
+                        
+                        <div class="form-group">
+                            <label for="comment_email">Email</label>
+                            <input type="email" class="form-control" name="comment_email">
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="comment_content">Your Comment</label>
+                            <textarea class="form-control" rows="3" name="comment_content"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" name="reply_comment">Reply</button>
+                    </form>
+
                 </div> <!-- .media -->            
                
       <?php }   
@@ -1023,9 +1063,9 @@
             $table_row .= "<td>{$comment_email}</td>";
             $table_row .= "<td>{$comment_content}</td>";
             $table_row .= "<td>{$comment_status}</td>";
-            $table_row .= "<td><a href='admin_comments.php?approve={$comment_id}{$logged_in_com}'>Approve</a></td>";
-            $table_row .= "<td><a href='admin_comments.php?deny={$comment_id}{$logged_in_com}'>Deny</a></td>";
-            $table_row .= "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete'); \" href='admin_comments.php?delete={$comment_id}&post_id={$comment_post_id}{$logged_in_com}'>Delete</a></td>";
+            $table_row .= "<td><a class='btn btn-success' href='admin_comments.php?approve={$comment_id}{$logged_in_com}'>Approve</a></td>";
+            $table_row .= "<td><a class='btn btn-warning' href='admin_comments.php?deny={$comment_id}{$logged_in_com}'>Deny</a></td>";
+            $table_row .= "<td><a class='btn btn-danger' onClick=\"javascript: return confirm('Are you sure you want to delete'); \" href='admin_comments.php?delete={$comment_id}&post_id={$comment_post_id}{$logged_in_com}'>Delete</a></td>";
             $table_row .= "</tr>";
         
             echo $table_row;
@@ -1262,8 +1302,8 @@
             $table_row .= "<td>{$lname}</td>";
             $table_row .= "<td>{$email}</td>";
             $table_row .= "<td>{$role}</td>";
-            $table_row .= "<td><a href='admin_users.php?source=edit_user&user_id={$user_id}&{$logged_in}'>Edit</a></td>";
-            $table_row .= "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete'); \" href='admin_users.php?delete={$user_id}'>Delete</a></td>";
+            $table_row .= "<td><a class='btn btn-warning' href='admin_users.php?source=edit_user&user_id={$user_id}&{$logged_in}'>Edit</a></td>";
+            $table_row .= "<td><a class='btn btn-danger' onClick=\"javascript: return confirm('Are you sure you want to delete'); \" href='admin_users.php?delete={$user_id}'>Delete</a></td>";
             $table_row .= "</tr>";
         
             echo $table_row; 

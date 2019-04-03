@@ -3,7 +3,7 @@
 
 <h2>ALL COMMENTS<?php echo $subtitle; ?></h2>
 
-<table class="table table-bordered table-hover">
+<table id="myTable" class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>Id</th>
